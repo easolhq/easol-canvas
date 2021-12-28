@@ -1,0 +1,14 @@
+---
+image:
+  type: image
+align_left:
+  type: boolean
+---
+
+{% if align_left %}
+  {% assign class = "align-left" %}
+{% else %}
+  {% assign class = "align-right" %}
+{% endif %}
+
+<img class="{{ class }}" src="{{ image.url }}" alt="{{ image.alt }}">
