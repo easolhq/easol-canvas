@@ -1,0 +1,3 @@
+module Canvas
+
+end
