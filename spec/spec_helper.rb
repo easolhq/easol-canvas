@@ -2,6 +2,7 @@ require "tmpdir"
 require "fileutils"
 
 Dir["./spec/support/**/*.rb"].each {|f| require f}
+require_relative "../lib/canvas"
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
