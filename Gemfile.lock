@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     easol-canvas (0.1.0)
+      nokogiri
       thor
 
 GEM
@@ -9,9 +10,12 @@ GEM
   specs:
     ast (2.4.2)
     diff-lcs (1.5.0)
+    nokogiri (1.12.5-arm64-darwin)
+      racc (~> 1.4)
     parallel (1.21.0)
     parser (3.0.3.2)
       ast (~> 2.4.1)
+    racc (1.6.0)
     rainbow (3.0.0)
     regexp_parser (2.2.0)
     rexml (3.2.5)
