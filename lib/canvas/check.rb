@@ -1,3 +1,5 @@
+require 'cli/ui'
+
 module Canvas
   class Check
     class << self
@@ -33,6 +35,12 @@ module Canvas
       check_required_files
       check_html_files
     end
+
+    def failed?
+      @offenses.any?
+    end
+
+    private
 
     def check_required_files
       self.class.required_files.each do |filename|
