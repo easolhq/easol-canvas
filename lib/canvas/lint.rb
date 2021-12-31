@@ -5,11 +5,7 @@ module Canvas
     def run
       output_context = CLI::UI::SpinGroup.new(auto_debrief: false)
 
-      checks = [
-        TemplateCheck.new,
-        AssetsCheck.new,
-        PartialsCheck.new
-      ]
+      checks = Checks.registered.map(&:new)
 
       checks.each do |check|
         run_check(check, output_context)
