@@ -79,4 +79,14 @@ RSpec.configure do |config|
 
     result
   end
+
+  def capture_io(&block)
+    err = nil
+    out = capture(:stdout) do
+      err = capture(:stderr) do
+        block.call
+      end
+    end
+    [out, err]
+  end
 end
