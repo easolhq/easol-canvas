@@ -3,34 +3,6 @@ describe Canvas::Check do
   subject(:check) { DummyCheck.new }
 
   describe "#run" do
-    describe "Checking required files" do
-      before do
-        stub_const(
-          "DummyCheck",
-          Class.new(Canvas::Check) {
-            self.base_folder = "templates"
-            require_file "product/index.liquid"
-          }
-        )
-      end
-
-      it "doesn't add any errors if all the required files are present" do
-        copy_example_directory("alchemist")
-        subject.run
-        expect(subject.offenses).to be_empty
-      end
-
-      it "adds an offense when the theme is any of the required files" do
-        copy_example_directory("vagabond")
-        subject.run
-        expect(subject.offenses).to match_array([
-          have_attributes(
-            message: "Missing file: product/index.liquid"
-          )
-        ])
-      end
-    end
-
     describe "Checking html formats" do
       before do
         stub_const(

@@ -3,17 +3,8 @@ require 'cli/ui'
 module Canvas
   class Check
     class << self
-      attr_reader :required_files, :html_files
+      attr_reader :html_files
       attr_accessor :base_folder
-
-      def required_files
-        @required_files ||= []
-      end
-
-      def require_file(filename)
-        @required_files ||= []
-        @required_files << filename
-      end
 
       def html_files
         @html_files ||= []
@@ -32,7 +23,6 @@ module Canvas
     end
 
     def run
-      check_required_files
       check_html_files
     end
 
@@ -41,16 +31,6 @@ module Canvas
     end
 
     private
-
-    def check_required_files
-      self.class.required_files.each do |filename|
-        unless File.exists?("#{self.class.base_folder}/#{filename}")
-          @offenses << Offense.new(
-            message: "Missing file: #{filename}"
-          )
-        end
-      end
-    end
 
     def check_html_files
       self.class.html_files.each do |filename|
