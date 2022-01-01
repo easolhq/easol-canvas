@@ -8,9 +8,8 @@ require_relative "canvas/checks"
 
 Dir[__dir__ + "/canvas/checks/*.rb"].each { |file| require file }
 
-Canvas::Checks.register(Canvas::TemplateCheck)
-Canvas::Checks.register(Canvas::PartialsCheck)
 Canvas::Checks.register(Canvas::RequiredFilesCheck)
+Canvas::Checks.register(Canvas::ValidHtmlCheck)
 
 module Canvas
 end

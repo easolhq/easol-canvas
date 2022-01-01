@@ -16,7 +16,7 @@ describe Canvas::Validator::Html do
     end
 
     it "returns false if the html passed is not valid xml" do
-      html = "<p>This is valid html</foo>"
+      html = "<p>This is not valid html<\r\n"
       expect(Canvas::Validator::Html.new(html).validate).to be_falsey
     end
 
@@ -27,7 +27,7 @@ describe Canvas::Validator::Html do
           {% foreach item in items %}
             <p>{{ item }}</p>
           {% endforeach %}
-        </bar>
+        <
       EOF
       expect(Canvas::Validator::Html.new(html).validate).to be_falsey
     end
