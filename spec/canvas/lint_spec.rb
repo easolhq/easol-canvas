@@ -20,7 +20,6 @@ describe Canvas::Lint do
   describe "#run" do
     it "runs all registered checks" do
       Canvas::Checks.register(DummyCheck)
-      expect_any_instance_of(DummyCheck).to receive(:run)
 
       stdout, _err = capture_io { linter.run }
 
@@ -30,10 +29,15 @@ describe Canvas::Lint do
     it "outputs a failure message if any checks fail" do
       Canvas::Checks.register(DummyCheck)
       allow_any_instance_of(DummyCheck).to receive(:failed?).and_return(true)
+      allow_any_instance_of(DummyCheck).to receive(:offenses).and_return(
+        [Canvas::Offense.new(message: "Bad files")]
+      )
 
       stdout, _err = capture_io { linter.run }
 
-      expect(stdout).to include("Failures!")
+      expect(stdout).to include("Failures")
+      expect(stdout).to include("DummyCheck")
+      expect(stdout).to include("Bad files")
     end
   end
 end
