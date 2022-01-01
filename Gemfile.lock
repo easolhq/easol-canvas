@@ -3,6 +3,7 @@ PATH
   specs:
     easol-canvas (0.1.0)
       cli-ui
+      liquid
       nokogiri
       thor
 
@@ -12,6 +13,7 @@ GEM
     ast (2.4.2)
     cli-ui (1.5.1)
     diff-lcs (1.5.0)
+    liquid (5.1.0)
     nokogiri (1.12.5-arm64-darwin)
       racc (~> 1.4)
     parallel (1.21.0)

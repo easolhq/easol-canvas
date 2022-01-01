@@ -9,7 +9,9 @@ describe Canvas::Validator::Html do
       html = <<-EOF
         <p>This is valid {{ liquid }}</p>
         {% foreach item in items %}
-          <p>{{ item }}</p>
+          {% if item.position < 5 %}
+            <p>{{ item }}</p>
+          {% endif %}
         {% endforeach %}
       EOF
       expect(Canvas::Validator::Html.new(html).validate).to be_truthy
