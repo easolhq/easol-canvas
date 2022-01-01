@@ -31,5 +31,13 @@ describe Canvas::Validator::Html do
       EOF
       expect(Canvas::Validator::Html.new(html).validate).to be_falsey
     end
+
+    it "parses using HTML5" do
+      # footer is an HTML5 element
+      html = <<-EOF
+        <footer>Hello world</footer>
+      EOF
+      expect(Canvas::Validator::Html.new(html).validate).to be_truthy
+    end
   end
 end

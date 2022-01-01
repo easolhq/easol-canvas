@@ -9,7 +9,7 @@ module Canvas
       end
 
       def validate
-        doc = Nokogiri::HTML(@file)
+        doc = Nokogiri::HTML5(@file)
         @errors = doc.errors
         doc.errors.empty?
       end
