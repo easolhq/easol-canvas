@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 module Canvas
   autoload :Check, "canvas/check"
   autoload :Checks, "canvas/checks"
@@ -8,6 +7,7 @@ module Canvas
   autoload :Lint, "canvas/lint"
   autoload :Offense, "canvas/offense"
   autoload :Version, "canvas/version"
+  autoload :DevServer, "canvas/dev_server"
 end
 
 # We need to ensure Canvas::Validator::SchemaAttribute::Base is required first

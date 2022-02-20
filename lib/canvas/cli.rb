@@ -17,5 +17,10 @@ module Canvas
     def __print_version
       puts Canvas::VERSION
     end
+
+    desc "dev", "Starts a dev server"
+    def dev
+      Canvas::DevServer.new.run
+    end
   end
 end
