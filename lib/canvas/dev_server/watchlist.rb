@@ -2,9 +2,7 @@ module Canvas
   class DevServer
     class WatchList
       def files
-        [
-          "foo.txt"
-        ]
+        Canvas::Config.get(:links)&.keys || []
       end
     end
   end
