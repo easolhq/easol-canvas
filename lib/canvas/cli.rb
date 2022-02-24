@@ -22,5 +22,10 @@ module Canvas
     def dev
       Canvas::DevServer.new.run
     end
+
+    desc "link", "links the path specified to the resource given"
+    def link(path, resource)
+      Canvas::Linker.new.link(path, resource)
+    end
   end
 end
