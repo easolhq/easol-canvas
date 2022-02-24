@@ -30,7 +30,7 @@ module Canvas
     end
 
     def sync_files(modified, added, removed)
-      puts "CHANGED #{modified.first}"
+      Canvas::Config.set(synced: true)
     end
   end
 end
