@@ -3,6 +3,9 @@ require "fileutils"
 
 module Canvas
   class Config
+    extend SingleForwardable
+    def_delegators :new, :set, :get, :merge
+
     def initialize
       @config_folder = FileUtils.mkdir_p(File.join(Dir.getwd, ".canvas"))
       @config = PStore.new(File.join(@config_folder, "config.pstore"))
