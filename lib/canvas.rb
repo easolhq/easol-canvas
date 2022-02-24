@@ -3,6 +3,7 @@ module Canvas
   autoload :Check, "canvas/check"
   autoload :Checks, "canvas/checks"
   autoload :Cli, "canvas/cli"
+  autoload :Config, "canvas/config"
   autoload :Constants, "canvas/constants"
   autoload :Lint, "canvas/lint"
   autoload :Offense, "canvas/offense"
