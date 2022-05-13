@@ -4,6 +4,8 @@ require "fileutils"
 Dir["./spec/support/**/*.rb"].each {|f| require f}
 require_relative "../lib/canvas"
 
+require 'webmock/rspec'
+
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     # This option will default to `true` in RSpec 4. It makes the `description`

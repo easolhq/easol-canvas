@@ -16,4 +16,5 @@ Gem::Specification.new do |s|
   s.add_dependency "nokogiri"
   s.add_dependency "cli-ui"
   s.add_dependency "liquid"
+  s.add_dependency "netrc"
 end

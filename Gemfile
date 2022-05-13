@@ -9,4 +9,5 @@ gemspec
 group :development, :test do
   gem "rspec"
   gem "standard"
+  gem "webmock"
 end
