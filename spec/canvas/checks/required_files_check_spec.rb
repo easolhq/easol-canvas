@@ -17,7 +17,7 @@ describe Canvas::RequiredFilesCheck do
       # overkill to check all of them
       expect(subject.offenses).to include(
         have_attributes(
-          message: "Missing file: templates/product/index.liquid"
+          message: "Missing file: templates/product/index.{html,liquid}"
         )
       )
     end

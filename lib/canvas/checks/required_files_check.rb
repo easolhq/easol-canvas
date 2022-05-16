@@ -1,21 +1,21 @@
 module Canvas
   class RequiredFilesCheck < Check
     REQUIRED_FILES = [
-      "templates/product/index.liquid",
-      "templates/blog_overview/index.liquid",
-      "templates/blog_post/index.liquid",
-      "partials/footer/index.liquid",
-      "partials/menu/index.liquid",
+      "templates/product/index.{html,liquid}",
+      "templates/blog_overview/index.{html,liquid}",
+      "templates/blog_post/index.{html,liquid}",
+      "partials/footer/index.{html,liquid}",
+      "partials/menu/index.{html,liquid}",
       "assets/index.css"
-    ]
+    ].freeze
 
     def run
       REQUIRED_FILES.each do |filename|
-        unless File.exists?(filename)
-            @offenses << Offense.new(
-              message: "Missing file: #{filename}"
-            )
-        end
+        next unless Dir.glob(filename).empty?
+
+        @offenses << Offense.new(
+          message: "Missing file: #{filename}"
+        )
       end
     end
   end
