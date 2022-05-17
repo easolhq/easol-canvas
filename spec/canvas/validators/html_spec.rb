@@ -6,14 +6,14 @@ describe Canvas::Validator::Html do
     end
 
     it "returns true if the html passed is valid liquid" do
-      html = <<-EOF
+      html = <<-LIQUID
         <p>This is valid {{ liquid }}</p>
         {% foreach item in items %}
           {% if item.position < 5 %}
             <p>{{ item }}</p>
           {% endif %}
         {% endforeach %}
-      EOF
+      LIQUID
       expect(Canvas::Validator::Html.new(html).validate).to be_truthy
     end
 
@@ -23,22 +23,22 @@ describe Canvas::Validator::Html do
     end
 
     it "returns false if the html passed is valid liquid but invalid html" do
-      html = <<-EOF
+      html = <<-LIQUID
         <p>This is valid {{ liquid }}</p>
         <div>
           {% foreach item in items %}
             <p>{{ item }}</p>
           {% endforeach %}
         <
-      EOF
+      LIQUID
       expect(Canvas::Validator::Html.new(html).validate).to be_falsey
     end
 
     it "parses using HTML5" do
       # footer is an HTML5 element
-      html = <<-EOF
+      html = <<-LIQUID
         <footer>Hello world</footer>
-      EOF
+      LIQUID
       expect(Canvas::Validator::Html.new(html).validate).to be_truthy
     end
   end
