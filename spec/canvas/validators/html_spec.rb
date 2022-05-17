@@ -41,5 +41,18 @@ describe Canvas::Validator::Html do
       LIQUID
       expect(Canvas::Validator::Html.new(html).validate).to be_truthy
     end
+
+    it "strips out front matter" do
+      html = <<-LIQUID
+        ---
+        form_snippet:
+          type: string
+          hint: Configure a form with a third-party. Codes begin with `<frame>` or `<script>`.
+        ---
+        <p>This is valid html</p>
+      LIQUID
+
+      expect(Canvas::Validator::Html.new(html).validate).to be_truthy
+    end
   end
 end

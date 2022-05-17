@@ -3,7 +3,6 @@ module Canvas
     def run
       html_files.each do |filename|
         file = File.read(filename)
-
         validator = Validator::Html.new(file)
 
         next if validator.validate

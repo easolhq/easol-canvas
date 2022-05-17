@@ -13,8 +13,8 @@ describe Canvas::ValidHtmlCheck do
       copy_example_directory("alchemist")
       subject.run
       message = <<~EOS.chop
-        Invalid HTML: templates/blog_post/index.liquid - 
-        1:19: ERROR: Start tag of nonvoid HTML element ends with '/>', use '>'.\n
+        Invalid HTML: templates/blog_post/index.liquid -
+        14:19: ERROR: Start tag of nonvoid HTML element ends with '/>', use '>'.\n
         <h1>{{post.title}}<foo/>\n
                           ^
       EOS
