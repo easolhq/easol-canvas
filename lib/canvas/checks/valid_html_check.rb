@@ -6,12 +6,12 @@ module Canvas
 
         validator = Validator::Html.new(file)
 
-        unless validator.validate
-          validator.errors.map(&:message).each do |message|
-            @offenses << Offense.new(
-              message: "Invalid HTML: #{filename} - \n#{message}",
-            )
-          end
+        next if validator.validate
+
+        validator.errors.map(&:message).each do |message|
+          @offenses << Offense.new(
+            message: "Invalid HTML: #{filename} - \n#{message}",
+          )
         end
       end
     end
