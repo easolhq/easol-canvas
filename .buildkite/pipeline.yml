@@ -1,0 +1,8 @@
+steps:
+  - label: ":rspec: Ruby specs"
+    command:
+      - "bundle"
+      - "bundle exec rspec"
+    plugins:
+      - docker#v3.9.0:
+          image: ruby:latest
