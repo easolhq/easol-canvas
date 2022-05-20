@@ -26,18 +26,20 @@ describe Canvas::Lint do
       expect(stdout).to include("DummyCheck")
     end
 
-    it "outputs a failure message if any checks fail" do
+    it "outputs a failure message and returns exit code 1 if any checks fail" do
       Canvas::Checks.register(DummyCheck)
       allow_any_instance_of(DummyCheck).to receive(:failed?).and_return(true)
       allow_any_instance_of(DummyCheck).to receive(:offenses).and_return(
         [Canvas::Offense.new(message: "Bad files")]
       )
 
-      stdout, _err = capture_io { linter.run }
-
-      expect(stdout).to include("Failures")
-      expect(stdout).to include("DummyCheck")
-      expect(stdout).to include("Bad files")
+      expect {
+        stdout, _err = capture_io { linter.run }
+        expect(stdout)
+          .to include("Failures")
+          .and include("DummyCheck")
+          .and include("Bad files")
+      }.to raise_error(SystemExit)
     end
   end
 end

@@ -15,6 +15,7 @@ module Canvas
 
       if @checks.any?(&:failed?)
         puts debrief_message
+        exit 1
       end
     end
 
