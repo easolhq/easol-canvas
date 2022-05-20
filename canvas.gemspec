@@ -7,8 +7,8 @@ Gem::Specification.new do |s|
     It provides tooling to check theme directories for errors and to make sure
     they confirm with the Easol theme spec.
   EOF
-  s.authors     = ["Kyle Byrne"]
-  s.email       = "kyle@easol.com"
+  s.authors     = ["Kyle Byrne", "Ian Mooney"]
+  s.email       = "developers@easol.com"
   s.files       = Dir['lib/**/*.rb'] + Dir['bin/*']
   s.license     = 'MIT'
 
