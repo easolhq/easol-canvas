@@ -5,18 +5,6 @@ describe Canvas::Validator::Html do
       expect(Canvas::Validator::Html.new(html).validate).to be_truthy
     end
 
-    it "returns true if the html passed is valid liquid" do
-      html = <<-LIQUID
-        <p>This is valid {{ liquid }}</p>
-        {% foreach item in items %}
-          {% if item.position < 5 %}
-            <p>{{ item }}</p>
-          {% endif %}
-        {% endforeach %}
-      LIQUID
-      expect(Canvas::Validator::Html.new(html).validate).to be_truthy
-    end
-
     it "returns false if the html passed is not valid xml" do
       html = "<p>This is not valid html<\r\n"
       expect(Canvas::Validator::Html.new(html).validate).to be_falsey
@@ -26,9 +14,9 @@ describe Canvas::Validator::Html do
       html = <<-LIQUID
         <p>This is valid {{ liquid }}</p>
         <div>
-          {% foreach item in items %}
+          {% for item in items %}
             <p>{{ item }}</p>
-          {% endforeach %}
+          {% endfor %}
         <
       LIQUID
       expect(Canvas::Validator::Html.new(html).validate).to be_falsey

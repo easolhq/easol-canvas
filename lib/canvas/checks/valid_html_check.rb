@@ -9,14 +9,14 @@ module Canvas
 
         validator.errors.map(&:message).each do |message|
           @offenses << Offense.new(
-            message: "Invalid HTML: #{filename} - \n#{message}",
+            message: "Invalid HTML: #{filename} - \n#{message}"
           )
         end
       end
     end
 
     def html_files
-      Dir.glob("**/*.liquid") + Dir.glob("**/*.html")
+      Dir.glob("**/*.{html,liquid}")
     end
   end
 end
