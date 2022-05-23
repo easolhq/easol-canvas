@@ -7,7 +7,7 @@ module Canvas
 
         next if validator.validate
 
-        validator.errors.map(&:message).each do |message|
+        validator.errors.each do |message|
           @offenses << Offense.new(
             message: "Invalid HTML: #{filename} - \n#{message}"
           )

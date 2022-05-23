@@ -7,16 +7,18 @@ module Canvas
       LIQUID_TAG = /#{Liquid::TagStart}.*?#{Liquid::TagEnd}/om
       LIQUID_VARIABLE = /#{Liquid::VariableStart}.*?#{Liquid::VariableEnd}/om
       LIQUID_TAG_OR_VARIABLE = /#{LIQUID_TAG}|#{LIQUID_VARIABLE}/om
+      HTML_LIQUID_PLACEHOLDER = /≬[0-9a-z\n]+[#\n]*≬/m
 
       attr_reader :errors
 
       def initialize(file)
         @file = file
+        @placeholders = []
       end
 
       def validate
         doc = Nokogiri::HTML5.fragment(extracted_html, max_errors: 1)
-        @errors = doc.errors
+        @errors = resub_placeholders(doc.errors)
         doc.errors.empty?
       end
 
@@ -31,7 +33,14 @@ module Canvas
       # same number of empty space characters, so that the linter
       # reports the correct character number.
       def strip_out_liquid(html)
-        html.gsub(LIQUID_TAG_OR_VARIABLE) { |tag| " " * tag.size }
+        html.gsub(LIQUID_TAG_OR_VARIABLE) { |tag|
+          next unless tag.size > 4
+
+          placeholder_index = @placeholders.size.to_s(36)
+          @placeholders << tag
+          placeholder_length = tag.size - placeholder_index.size - 2
+          "≬#{placeholder_index}#{"#" * placeholder_length}≬"
+        }
       end
 
       # We want to strip out the front matter and replace it
@@ -45,6 +54,15 @@ module Canvas
           html.sub(extractor.front_matter, "\n" * num_lines)
         else
           html
+        end
+      end
+
+      def resub_placeholders(errors)
+        errors.map do |error|
+          error.message.gsub(HTML_LIQUID_PLACEHOLDER) do |match|
+            key = /[0-9a-z]+/.match(match.gsub("\n", ''))[0]
+            @placeholders[key.to_i(36)]
+          end
         end
       end
     end

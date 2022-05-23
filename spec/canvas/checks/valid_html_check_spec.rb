@@ -15,7 +15,7 @@ describe Canvas::ValidHtmlCheck do
       message = <<~MESSAGE.chop
         Invalid HTML: blocks/hero/block.liquid - \n
         14:16: ERROR: Start tag of nonvoid HTML element ends with '/>', use '>'.
-        <h1>           <foo/>
+        <h1>{{heading}}<foo/>
                        ^
       MESSAGE
 
