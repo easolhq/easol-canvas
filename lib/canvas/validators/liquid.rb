@@ -19,7 +19,7 @@ module Canvas
         )
         true
       rescue ::Liquid::SyntaxError => e
-        @errors = [e]
+        @errors = [e.message]
         false
       end
 
