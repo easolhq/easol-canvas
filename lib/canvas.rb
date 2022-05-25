@@ -1,4 +1,5 @@
 require_relative "canvas/version"
+require_relative "canvas/constants"
 require_relative "canvas/cli"
 require_relative "canvas/lint"
 require_relative "canvas/check"
