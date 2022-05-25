@@ -19,6 +19,7 @@ files.each { |file| require file }
 Canvas::Checks.register(Canvas::RequiredFilesCheck)
 Canvas::Checks.register(Canvas::ValidHtmlCheck)
 Canvas::Checks.register(Canvas::ValidLiquidCheck)
+Canvas::Checks.register(Canvas::ValidBlockSchemasCheck)
 
 module Canvas
 end
