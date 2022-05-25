@@ -6,6 +6,13 @@ require_relative "canvas/check"
 require_relative "canvas/offense"
 require_relative "canvas/checks"
 
+# We need to ensure Canvas::Validator::SchemaAttribute::Base is required first
+require_relative "canvas/validators/schema_attributes/base"
+
+# The attribute validators need to be required before Canvas::Validator::SchemaAttribute
+attribute_validators = Dir["#{__dir__}/canvas/validators/schema_attributes/*.rb"]
+attribute_validators.each { |file| require file }
+
 files = Dir["#{__dir__}/canvas/{checks,services,validators}/*.rb"]
 files.each { |file| require file }
 
