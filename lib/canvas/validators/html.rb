@@ -4,8 +4,8 @@ require "liquid"
 module Canvas
   module Validator
     class Html
-      LIQUID_TAG = /#{Liquid::TagStart}.*?#{Liquid::TagEnd}/om
-      LIQUID_VARIABLE = /#{Liquid::VariableStart}.*?#{Liquid::VariableEnd}/om
+      LIQUID_TAG = /#{::Liquid::TagStart}.*?#{::Liquid::TagEnd}/om
+      LIQUID_VARIABLE = /#{::Liquid::VariableStart}.*?#{::Liquid::VariableEnd}/om
       LIQUID_TAG_OR_VARIABLE = /#{LIQUID_TAG}|#{LIQUID_VARIABLE}/om
 
       attr_reader :errors
