@@ -348,7 +348,81 @@ describe Canvas::Validator::SchemaAttribute do
       end
     end
 
+    context "when a reserved word is used for the 'name'" do
+      let(:attribute) {
+        {
+          "name" => "page",
+          "type" => "string"
+        }
+      }
+
+      it "returns false with errors" do
+        expect(validator.validate).to eq(false)
+        expect(validator.errors).to include(
+          "\"name\" can't be one of these reserved words: page, company, cart, flash, block"
+        )
+      end
+    end
+
+    context "when 'additional_reserved_names' are specified" do
+      subject(:validator) {
+        Canvas::Validator::SchemaAttribute.new(
+          attribute: attribute,
+          additional_reserved_names: %w[items]
+        )
+      }
+
+      context "when an additional reserved word is used for the 'name'" do
+        let(:attribute) {
+          {
+            "name" => "items",
+            "type" => "string"
+          }
+        }
+
+        it "returns false with errors" do
+          expect(validator.validate).to eq(false)
+          expect(validator.errors).to include(
+            "\"name\" can't be one of these reserved words: page, company, cart, flash, block, items"
+          )
+        end
+      end
+
+      context "when a normal reserved word is used for the 'name'" do
+        let(:attribute) {
+          {
+            "name" => "company",
+            "type" => "string"
+          }
+        }
+
+        it "returns false with errors" do
+          expect(validator.validate).to eq(false)
+          expect(validator.errors).to include(
+            "\"name\" can't be one of these reserved words: page, company, cart, flash, block, items"
+          )
+        end
+      end
+
+      context "when a non-reserved word is used for the 'name'" do
+        let(:attribute) {
+          {
+            "name" => "my_title",
+            "type" => "string"
+          }
+        }
+
+        it "returns true" do
+          expect(validator.validate).to eq(true)
+        end
+      end
+    end
+
     context "when attribute is using a custom type" do
+      subject(:validator) {
+        Canvas::Validator::SchemaAttribute.new(attribute: attribute, custom_types: [card_type])
+      }
+
       let(:card_type) {
         {
           "key" => "Card",
@@ -359,10 +433,6 @@ describe Canvas::Validator::SchemaAttribute do
             { "name" => "alignment", "type" => "radio", "options" => [{ "label" => "Top", "value" => "top" }] }
           ]
         }
-      }
-
-      subject(:validator) {
-        Canvas::Validator::SchemaAttribute.new(attribute: attribute, custom_types: [card_type])
       }
 
       let(:attribute) {
