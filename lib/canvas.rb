@@ -20,6 +20,7 @@ Canvas::Checks.register(Canvas::RequiredFilesCheck)
 Canvas::Checks.register(Canvas::ValidHtmlCheck)
 Canvas::Checks.register(Canvas::ValidLiquidCheck)
 Canvas::Checks.register(Canvas::ValidBlockSchemasCheck)
+Canvas::Checks.register(Canvas::ValidMenuSchemaCheck)
 
 module Canvas
 end
