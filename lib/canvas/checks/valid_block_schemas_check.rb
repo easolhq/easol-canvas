@@ -65,37 +65,8 @@ module Canvas
 
     def extract_schema(front_matter)
       {
-        "attributes" => extract_attributes_as_array(front_matter)
+        "attributes" => Canvas::ExpandAttributes.call(front_matter)
       }
-    end
-
-    # This method will convert the attributes as they are defined in the front matter
-    # into an array of hashes that the {Canvas::Validator::SchemaAttribute} class expects.
-    # e.g. the following front matter:
-    #
-    # my_title:
-    #   type: string
-    # my_color:
-    #   type: color
-    #
-    # will get converted to:
-    #
-    # [
-    #   {
-    #     "name" => "my_title",
-    #     "type" => "string"
-    #   },
-    #   {
-    #     "name" => "my_color",
-    #     "type" => "color"
-    #   }
-    # ]
-    #
-    # @return [Array<Hash>] array of hashes that represent each attribute
-    def extract_attributes_as_array(attributes_hash)
-      attributes_hash.each_with_object([]) do |(name, attribute_hash), attrs|
-        attrs << attribute_hash.merge("name" => name)
-      end
     end
   end
 end
