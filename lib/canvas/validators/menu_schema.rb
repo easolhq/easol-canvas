@@ -1,31 +1,30 @@
 # frozen_string_literal: true
 
-require "nokogiri"
-require "liquid"
-
 module Canvas
   module Validator
     # :documented:
-    # This class is used to validate a schema for a block.
-    # Example of a valid block schema:
+    # This class is used to validate a schema for a menu.
+    #
+    # Example:
     # {
-    #   "attributes" => [
-    #     {
-    #       "name" => "my_title",
-    #       "type" => "string"
-    #     },
-    #     {
-    #       "name" => "my_color",
-    #       "type" => "color",
-    #       "label" => "My color",
-    #       "hint" => "Select your favourite color"
-    #     }
-    #   ]
+    #   "max_item_levels": 2,
+    #   "supports_open_new_tab": "true",
+    #   "attributes": {
+    #      "fixed": {
+    #         "group": "design",
+    #         "label": "Fixed when scrolling",
+    #         "hint": "The menu will stay fixed to the top when scrolling down the page.",
+    #         "type": "boolean",
+    #         "default: "false"
+    #      }
+    #   }
     # }
-    class BlockSchema
-      PERMITTED_KEYS = %w[attributes].freeze
+    #
+    class MenuSchema
+      PERMITTED_KEYS = %w[max_item_levels supports_open_new_tab attributes].freeze
+      ADDITIONAL_RESERVED_NAMES = %w[items type].freeze
 
-      attr_reader :errors, :schema
+      attr_reader :schema, :errors
 
       # @param schema [Hash] the schema to be validated
       # @param custom_types [Array<Hash>] a list of custom types
@@ -38,6 +37,7 @@ module Canvas
       def validate
         if ensure_valid_format
           ensure_no_unrecognized_keys
+          ensure_max_item_levels_is_valid
           ensure_attributes_are_valid
         end
 
@@ -62,13 +62,22 @@ module Canvas
         false
       end
 
+      def ensure_max_item_levels_is_valid
+        return true unless schema.key?("max_item_levels")
+        return true if [1, 2, 3].include?(schema["max_item_levels"].to_i)
+
+        @errors << "\"max_item_levels\" must be a number between 1 and 3"
+        false
+      end
+
       def ensure_attributes_are_valid
         return true unless schema["attributes"]
 
         schema["attributes"].each do |attribute_schema|
           attr_validator = Validator::SchemaAttribute.new(
             attribute: attribute_schema,
-            custom_types: @custom_types
+            custom_types: @custom_types,
+            additional_reserved_names: ADDITIONAL_RESERVED_NAMES
           )
           next if attr_validator.validate
 
