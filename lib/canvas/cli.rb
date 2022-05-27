@@ -8,5 +8,11 @@ module Canvas
       CLI::UI::StdoutRouter.enable
       Canvas::Lint.new.run
     end
+
+    map %w[--version -v] => :__print_version
+    desc "--version, -v", "print the version"
+    def __print_version
+      puts Canvas::VERSION
+    end
   end
 end
