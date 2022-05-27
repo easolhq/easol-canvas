@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Canvas
+  # :documented:
   class ValidJsonCheck < Check
     def run
       json_files.each do |filename|

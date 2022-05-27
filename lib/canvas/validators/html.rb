@@ -5,6 +5,7 @@ require "liquid"
 
 module Canvas
   module Validator
+    # :documented:
     class Html
       LIQUID_TAG = /#{::Liquid::TagStart}.*?#{::Liquid::TagEnd}/om
       LIQUID_VARIABLE = /#{::Liquid::VariableStart}.*?#{::Liquid::VariableEnd}/om

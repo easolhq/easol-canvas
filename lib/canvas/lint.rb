@@ -3,6 +3,7 @@
 require 'cli/ui'
 
 module Canvas
+  #:documented:
   class Lint
     def run
       output_context = CLI::UI::SpinGroup.new(auto_debrief: false)

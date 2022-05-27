@@ -5,6 +5,7 @@ require "liquid"
 
 module Canvas
   module Validator
+    # :documented:
     class Liquid
       attr_reader :errors
 

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Canvas
+  # :documented:
   class Offense
     attr_reader :message
 

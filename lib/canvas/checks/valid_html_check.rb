@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Canvas
+  # :documented:
   class ValidHtmlCheck < Check
     def run
       html_files.each do |filename|

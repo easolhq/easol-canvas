@@ -4,6 +4,7 @@ require "json"
 
 module Canvas
   module Validator
+    # :documented:
     class Json
       attr_reader :errors
 

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Canvas
+  # :documented:
   class RequiredFilesCheck < Check
     REQUIRED_FILES = [
       "templates/product/index.{html,liquid}",

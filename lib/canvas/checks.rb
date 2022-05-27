@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Canvas
+  # :documented:
   class Checks
     class << self
       def registered

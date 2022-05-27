@@ -4,6 +4,7 @@ require "thor"
 require 'cli/ui'
 
 module Canvas
+  # :documented:
   class Cli < Thor
     desc "lint", "Prints a hello world message"
     def lint

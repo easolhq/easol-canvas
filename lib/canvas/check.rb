@@ -3,6 +3,7 @@
 require 'cli/ui'
 
 module Canvas
+  # :documented:
   class Check
     attr_reader :offenses
 
