@@ -11,9 +11,8 @@ AllCops:
   UseCache: true
   Exclude:
     - "bin/*"
-    - "node_modules/**/*"
-    - "vendor/**/*"
-    - "db/schema.rb"
+    - "spec/examples/*"
+    - "spec/spec_helper.rb"
 
 Bundler/DuplicatedGem:
   Enabled: true
@@ -307,7 +306,7 @@ Style/DefWithParentheses:
 Style/Documentation:
   Enabled: true
   Include:
-    - "app/models/**/*.rb"
+    - "lib/canvas/**/*.rb"
 
 Style/EndBlock:
   Enabled: true
@@ -320,8 +319,6 @@ Style/For:
 
 Style/FrozenStringLiteralComment:
   Enabled: true
-  Exclude:
-    - "db/migrate/*.rb"
 
 Style/HashSyntax:
   Enabled: true
