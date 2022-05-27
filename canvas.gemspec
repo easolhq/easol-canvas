@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
-  s.name        = 'easol-canvas'
-  s.version     = '0.1.1'
+  s.name        = "easol-canvas"
+  s.version     = "0.1.1"
   s.summary     = "CLI to help with building themes for Easol"
   s.description = <<~EOF
     Canvas is a command line tool to help with building themes for Easol.
@@ -9,10 +9,10 @@ Gem::Specification.new do |s|
   EOF
   s.authors     = ["Kyle Byrne", "Ian Mooney"]
   s.email       = "developers@easol.com"
-  s.files       = Dir['lib/**/*.rb'] + Dir['bin/*']
-  s.license     = 'MIT'
+  s.files       = Dir["lib/**/*.rb"] + Dir["bin/*"]
+  s.license     = "MIT"
 
-  s.executables << 'canvas'
+  s.executables << "canvas"
 
   s.add_dependency "thor", "~> 1.2"
   s.add_dependency "nokogiri", "~> 1.13"
