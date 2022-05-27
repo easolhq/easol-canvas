@@ -22,6 +22,7 @@ Canvas::Checks.register(Canvas::ValidLiquidCheck)
 Canvas::Checks.register(Canvas::ValidBlockSchemasCheck)
 Canvas::Checks.register(Canvas::ValidMenuSchemaCheck)
 Canvas::Checks.register(Canvas::ValidFooterSchemaCheck)
+Canvas::Checks.register(Canvas::ValidJsonCheck)
 
 module Canvas
 end
