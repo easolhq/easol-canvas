@@ -1,0 +1,16 @@
+{
+  "key": "faq",
+  "name": "Faq",
+  "attributes": [
+    {
+      "name": "question",
+      "label": "Question",
+      "type": "string"
+    },
+    {
+      "name": "answer",
+      "label": "Answer",
+      "type": "text"
+    }
+  ]
+}
