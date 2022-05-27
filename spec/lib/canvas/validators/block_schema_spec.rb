@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Canvas::Validator::BlockSchema do
   describe "#validate" do
     subject(:validator) {

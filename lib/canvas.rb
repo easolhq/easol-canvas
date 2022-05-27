@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "canvas/version"
 require_relative "canvas/constants"
 require_relative "canvas/cli"

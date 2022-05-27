@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Canvas::Validator::MenuSchema do
   describe "#validate" do
     subject(:validator) {

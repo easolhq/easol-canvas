@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Canvas
   class RequiredFilesCheck < Check
     REQUIRED_FILES = [

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Canvas::Cli do
   subject(:cli) { Canvas::Cli.new }
 

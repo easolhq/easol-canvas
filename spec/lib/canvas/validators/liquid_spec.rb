@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Canvas::Validator::Liquid do
   describe "#validate" do
     it "returns true if it is valid liquid" do

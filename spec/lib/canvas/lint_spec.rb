@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Canvas::Lint do
   subject(:linter) { Canvas::Lint.new }
 

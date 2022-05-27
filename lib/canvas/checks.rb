@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Canvas
   class Checks
     class << self
@@ -10,7 +12,7 @@ module Canvas
         return if @checks.include?(klass)
         @checks << klass
       end
-      
+
       def deregister_all!
         @checks = []
       end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Canvas::Validator::Html do
   describe "#validate" do
     it "returns true if the html passed is valid xml" do

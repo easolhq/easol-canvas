@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Canvas
   # :documented:
   # This service can be used to extract front matter from a liquid string.

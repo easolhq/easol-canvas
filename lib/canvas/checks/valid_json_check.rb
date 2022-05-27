@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Canvas
   class ValidJsonCheck < Check
     def run

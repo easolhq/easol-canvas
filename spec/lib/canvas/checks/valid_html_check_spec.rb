@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Canvas::ValidHtmlCheck do
   include ExampleDirectoryHelper
   subject(:check) { Canvas::ValidHtmlCheck.new }

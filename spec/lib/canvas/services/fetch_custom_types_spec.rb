@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Canvas::FetchCustomTypes do
   include ExampleDirectoryHelper
 
