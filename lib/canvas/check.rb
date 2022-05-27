@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'cli/ui'
+require "cli/ui"
 
 module Canvas
   # :documented:

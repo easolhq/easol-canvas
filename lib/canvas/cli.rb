@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "thor"
-require 'cli/ui'
+require "cli/ui"
 
 module Canvas
   # :documented:

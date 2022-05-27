@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'cli/ui'
+require "cli/ui"
 
 module Canvas
   #:documented:
@@ -32,7 +32,7 @@ module Canvas
     end
 
     def debrief_message
-      CLI::UI::Frame.open('Failures', color: :red) do
+      CLI::UI::Frame.open("Failures", color: :red) do
         failed_checks = @checks.filter(&:failed?)
         failed_checks.map do |check|
           CLI::UI::Frame.open(check.class.name, color: :red) do
