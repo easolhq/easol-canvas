@@ -8,5 +8,7 @@ gemspec
 
 group :development, :test do
   gem "rspec"
+  gem "rubocop-performance", require: false
+  gem "rubocop", require: false
   gem "standard"
 end

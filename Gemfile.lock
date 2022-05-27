@@ -64,6 +64,8 @@ PLATFORMS
 DEPENDENCIES
   easol-canvas!
   rspec
+  rubocop
+  rubocop-performance
   standard
 
 BUNDLED WITH
