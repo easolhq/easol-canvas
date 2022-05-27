@@ -14,8 +14,8 @@ Gem::Specification.new do |s|
 
   s.executables << 'canvas'
 
-  s.add_dependency "thor"
-  s.add_dependency "nokogiri"
-  s.add_dependency "cli-ui"
-  s.add_dependency "liquid"
+  s.add_dependency "thor", "~> 1.2"
+  s.add_dependency "nokogiri", "~> 1.13"
+  s.add_dependency "cli-ui", "~> 1.5"
+  s.add_dependency "liquid", "~> 5.3"
 end

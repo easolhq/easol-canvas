@@ -2,10 +2,10 @@ PATH
   remote: .
   specs:
     easol-canvas (0.1.1)
-      cli-ui
-      liquid
-      nokogiri
-      thor
+      cli-ui (~> 1.5)
+      liquid (~> 5.3)
+      nokogiri (~> 1.13)
+      thor (~> 1.2)
 
 GEM
   remote: https://rubygems.org/
