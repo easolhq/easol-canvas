@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Kyle Byrne", "Ian Mooney"]
   s.email       = "developers@easol.com"
   s.files       = Dir["lib/**/*.rb"] + Dir["bin/*"]
+  s.homepage    = "https://rubygems.org/gems/easol-canvas"
   s.license     = "MIT"
 
   s.executables << "canvas"
