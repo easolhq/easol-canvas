@@ -5,6 +5,14 @@ describe Canvas::Validator::SchemaAttribute do
     Canvas::Validator::SchemaAttribute.new(attribute: attribute)
   }
 
+  describe "VALIDATORS constants" do
+    it "has a validator defined for every primitive type" do
+      Canvas::Constants::PRIMITIVE_TYPES.each do |primitive_type|
+        expect(described_class::VALIDATORS).to have_key(primitive_type)
+      end
+    end
+  end
+
   describe "#validate" do
     context "when the attribute has only required keys" do
       let(:attribute) {
@@ -569,7 +577,9 @@ describe Canvas::Validator::SchemaAttribute do
 
       it "returns false with errors" do
         expect(validator.validate).to eq(false)
-        expect(validator.errors).to include("\"type\" must be one of: #{described_class::PRIMITIVE_TYPES.join(", ")}")
+        expect(validator.errors).to include(
+          "\"type\" must be one of: #{Canvas::Constants::PRIMITIVE_TYPES.join(", ")}"
+        )
       end
     end
 
