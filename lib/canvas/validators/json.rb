@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 require "json"
 
 module Canvas
   module Validator
+    # :documented:
     class Json
       attr_reader :errors
 

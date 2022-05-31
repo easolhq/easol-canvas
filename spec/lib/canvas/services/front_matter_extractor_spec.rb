@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Canvas::FrontMatterExtractor do
   subject(:service) {
     Canvas::FrontMatterExtractor.new(markup)

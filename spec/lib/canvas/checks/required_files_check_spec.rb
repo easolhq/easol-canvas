@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Canvas::RequiredFilesCheck do
   include ExampleDirectoryHelper
   subject(:check) { Canvas::RequiredFilesCheck.new }

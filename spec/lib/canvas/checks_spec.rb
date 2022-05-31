@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Canvas::Checks do
   before do
     stub_const(

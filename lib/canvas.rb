@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "canvas/version"
 require_relative "canvas/constants"
 require_relative "canvas/cli"
@@ -11,10 +13,14 @@ require_relative "canvas/validators/schema_attributes/base"
 
 # The attribute validators need to be required before Canvas::Validator::SchemaAttribute
 attribute_validators = Dir["#{__dir__}/canvas/validators/schema_attributes/*.rb"]
-attribute_validators.each { |file| require file }
+attribute_validators.each do |file|
+  require file
+end
 
 files = Dir["#{__dir__}/canvas/{checks,services,validators}/*.rb"]
-files.each { |file| require file }
+files.each do |file|
+  require file
+end
 
 Canvas::Checks.register(Canvas::RequiredFilesCheck)
 Canvas::Checks.register(Canvas::ValidHtmlCheck)

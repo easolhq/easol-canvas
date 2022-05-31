@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Canvas::ValidLiquidCheck do
   include ExampleDirectoryHelper
 

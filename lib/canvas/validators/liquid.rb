@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 require "nokogiri"
 require "liquid"
 
 module Canvas
   module Validator
+    # :documented:
     class Liquid
       attr_reader :errors
 

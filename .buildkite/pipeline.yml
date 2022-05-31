@@ -3,6 +3,7 @@ steps:
     command:
       - "bundle"
       - "bundle exec rspec"
+      - "bundle exec rubocop"
     plugins:
       - docker#v3.9.0:
           image: ruby:latest

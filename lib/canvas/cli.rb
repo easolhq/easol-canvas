@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 require "thor"
-require 'cli/ui'
+require "cli/ui"
 
 module Canvas
+  # :documented:
   class Cli < Thor
     desc "lint", "Prints a hello world message"
     def lint

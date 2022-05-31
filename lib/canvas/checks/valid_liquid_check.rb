@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module Canvas
+  # :documented:
   class ValidLiquidCheck < Check
     def run
       register_tags!

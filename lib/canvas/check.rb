@@ -1,6 +1,9 @@
-require 'cli/ui'
+# frozen_string_literal: true
+
+require "cli/ui"
 
 module Canvas
+  # :documented:
   class Check
     attr_reader :offenses
 
