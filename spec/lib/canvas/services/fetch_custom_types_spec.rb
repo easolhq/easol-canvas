@@ -63,8 +63,7 @@ describe Canvas::FetchCustomTypes do
               "attributes" => [
                 {
                   "name" => "question",
-                  "label" => "Question",
-                  "type" => "string"
+                  "label" => "Question"
                 },
                 {
                   "name" => "answer",

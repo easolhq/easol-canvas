@@ -34,7 +34,6 @@ module Canvas
         "radio" => SchemaAttribute::Radio,
         "variant" => SchemaAttribute::Variant,
       }.freeze
-      PRIMITIVE_TYPES = VALIDATORS.keys
       RESERVED_NAMES = %w[
         page
         company
@@ -71,7 +70,7 @@ module Canvas
       end
 
       def valid_types
-        PRIMITIVE_TYPES + custom_type_keys
+        Constants::PRIMITIVE_TYPES + custom_type_keys
       end
 
       def validator_for_type
