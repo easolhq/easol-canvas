@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
-require_relative "canvas/version"
-require_relative "canvas/constants"
-require_relative "canvas/cli"
-require_relative "canvas/lint"
-require_relative "canvas/check"
-require_relative "canvas/offense"
-require_relative "canvas/checks"
+module Canvas
+  autoload :Check, "canvas/check"
+  autoload :Checks, "canvas/checks"
+  autoload :Cli, "canvas/cli"
+  autoload :Constants, "canvas/constants"
+  autoload :Lint, "canvas/lint"
+  autoload :Offense, "canvas/offense"
+  autoload :Version, "canvas/version"
+end
 
 # We need to ensure Canvas::Validator::SchemaAttribute::Base is required first
 require_relative "canvas/validators/schema_attributes/base"
@@ -30,6 +32,3 @@ Canvas::Checks.register(Canvas::ValidBlockSchemasCheck)
 Canvas::Checks.register(Canvas::ValidMenuSchemaCheck)
 Canvas::Checks.register(Canvas::ValidFooterSchemaCheck)
 Canvas::Checks.register(Canvas::ValidCustomTypesCheck)
-
-module Canvas
-end
