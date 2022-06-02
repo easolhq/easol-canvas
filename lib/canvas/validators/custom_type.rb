@@ -38,6 +38,7 @@ module Canvas
           ensure_has_required_keys &&
           ensure_no_unrecognized_keys &&
           ensure_keys_are_correct_types &&
+          ensure_key_value_is_not_reserved &&
           ensure_no_duplicate_attributes &&
           ensure_attributes_are_valid &&
           ensure_first_attribute_not_array
@@ -85,6 +86,17 @@ module Canvas
             schema["attributes"].empty? ||
             schema["attributes"].any? { |a| !a.is_a?(Hash) }
             @errors << "\"attributes\" must be an array of objects"
+          return false
+        end
+
+        true
+      end
+
+      # Ensuring the value for key doesn't clash with our primitive type keys.
+      # See {Canvas::Constants::PRIMITIVE_TYPES}
+      def ensure_key_value_is_not_reserved
+        if schema["key"] && Constants::PRIMITIVE_TYPES.include?(schema["key"].downcase)
+          @errors << "\"key\" can't be one of these reserved words: #{Constants::PRIMITIVE_TYPES.join(', ')}"
           return false
         end
 
