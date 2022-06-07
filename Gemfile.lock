@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    easol-canvas (1.1.0)
+    easol-canvas (1.2.0)
       cli-ui (~> 1.5)
       liquid (~> 5.3)
       nokogiri (~> 1.13)
