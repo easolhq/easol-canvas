@@ -5,6 +5,7 @@ PATH
       cli-ui (~> 1.5)
       liquid (~> 5.3)
       nokogiri (~> 1.13)
+      sassc (~> 2.4)
       thor (~> 1.2)
 
 GEM
@@ -13,6 +14,7 @@ GEM
     ast (2.4.2)
     cli-ui (1.5.1)
     diff-lcs (1.5.0)
+    ffi (1.15.5)
     liquid (5.3.0)
     nokogiri (1.13.6-arm64-darwin)
       racc (~> 1.4)
@@ -51,6 +53,8 @@ GEM
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
     ruby-progressbar (1.11.0)
+    sassc (2.4.0)
+      ffi (~> 1.9)
     standard (1.5.0)
       rubocop (= 1.23.0)
       rubocop-performance (= 1.12.0)
