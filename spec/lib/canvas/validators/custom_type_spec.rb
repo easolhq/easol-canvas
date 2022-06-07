@@ -109,6 +109,26 @@ describe Canvas::Validator::CustomType do
       end
     end
 
+    context "when key is a reserved word" do
+      let(:schema) {
+        {
+          "key" => "string",
+          "name" => "Card",
+          "attributes" => [
+            {
+              "name" => "title",
+              "type" => "string"
+            }
+          ]
+        }
+      }
+
+      it "returns false with errors" do
+        expect(validator.validate).to eq(false)
+        expect(validator.errors).to include("\"key\" can't be one of these reserved words: #{Canvas::Constants::PRIMITIVE_TYPES.join(', ')}")
+      end
+    end
+
     context "when schema has empty attributes" do
       let(:schema) {
         {
