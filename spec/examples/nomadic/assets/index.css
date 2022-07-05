@@ -1,0 +1,6 @@
+h1 { color: $gray-100 }
+
+.block {
+  padding-top: 0;
+  padding-bottom: 0;
+}

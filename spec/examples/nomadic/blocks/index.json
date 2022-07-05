@@ -1,0 +1,11 @@
+{
+  "hero": {
+    "name": "Hero",
+    "category": "Content"
+  },
+  "image": {
+    "name": "Image",
+    "category": "Images"
+  }
+}
+
