@@ -14,11 +14,18 @@ module Canvas
 
     def run
       REQUIRED_FILES.each do |filename|
-        next unless Dir.glob(filename).empty?
+        file_paths = Dir.glob(filename)
 
-        @offenses << Offense.new(
-          message: "Missing file: #{filename}"
-        )
+
+        if file_paths.empty?
+          @offenses << Offense.new(
+            message: "Missing file: #{filename}"
+          )
+        elsif File.zero?(file_paths.first)
+          @offenses << Offense.new(
+            message: "Empty file: #{file_paths.first}"
+          )
+        end
       end
     end
   end
