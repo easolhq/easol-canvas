@@ -22,4 +22,5 @@ Gem::Specification.new do |s|
   s.add_dependency "cli-ui", "~> 1.5"
   s.add_dependency "liquid", "~> 5.3"
   s.add_dependency "sassc", "~> 2.4"
+  s.add_dependency "json-schema", "~> 3"
 end
