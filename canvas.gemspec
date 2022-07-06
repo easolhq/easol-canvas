@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name        = "easol-canvas"
-  s.version     = "1.2.0"
+  s.version     = "1.3.0"
   s.summary     = "CLI to help with building themes for Easol"
   s.description = <<~EOF
     Canvas is a command line tool to help with building themes for Easol.
