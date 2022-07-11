@@ -6,6 +6,13 @@
   "image": {
     "name": "Image",
     "category": "Images"
+  },
+  "text_with_layout": {
+    "name": "Text with layout",
+    "category": "Text"
+  },
+  "heading": {
+    "name": "Heading",
+    "category": "Text"
   }
 }
-

@@ -1,0 +1,28 @@
+---
+attributes:
+  heading:
+    type: string
+    default: "Hello world"
+  alt:
+    type: string
+  image:
+    type: image
+  background_color:
+    type: string
+layout:
+  - label: "Content"
+    type: tab
+    elements:
+      - heading
+      - label: Image
+        type: accordion
+        elements:
+          - image
+          - alt
+  - label: "Design"
+    type: tab
+    elements:
+      - background_color
+---
+
+<div>The block contents.</div>
