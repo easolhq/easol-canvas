@@ -23,21 +23,24 @@ module Canvas
     #   ]
     # }
     class BlockSchema
-      PERMITTED_KEYS = %w[attributes].freeze
+      PERMITTED_KEYS = %w[attributes layout].freeze
 
       attr_reader :errors, :schema
 
       # @param schema [Hash] the schema to be validated
       # @param custom_types [Array<Hash>] a list of custom types
       def initialize(schema:, custom_types: [])
-        @schema = schema
+        @schema = normalize_schema(schema)
         @custom_types = custom_types
         @errors = []
       end
 
       def validate
+        @errors = []
+
         if ensure_valid_format
           ensure_no_unrecognized_keys
+          ensure_layout_is_valid
           ensure_attributes_are_valid
         end
 
@@ -51,6 +54,16 @@ module Canvas
                        (schema["attributes"].nil? || attributes_array_of_hashes?(schema))
 
         @errors << "Schema is not in a valid format"
+        false
+      end
+
+      def ensure_layout_is_valid
+        return true unless schema["layout"]
+
+        layout_validator = LayoutSchema.new(schema: @schema)
+        return true if layout_validator.validate
+
+        @errors += layout_validator.errors
         false
       end
 
@@ -80,6 +93,19 @@ module Canvas
       def attributes_array_of_hashes?(schema)
         schema["attributes"].is_a?(Array) &&
           schema["attributes"].all? { |attr| attr.is_a?(Hash) }
+      end
+
+      def normalize_schema(schema)
+        if schema.key?("attributes")
+          {
+            **schema,
+            "attributes" => Canvas::ExpandAttributes.call(schema["attributes"])
+          }
+        else
+          {
+            "attributes" => Canvas::ExpandAttributes.call(schema)
+          }
+        end
       end
     end
   end
