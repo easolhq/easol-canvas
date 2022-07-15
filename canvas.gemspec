@@ -1,8 +1,9 @@
 # frozen_string_literal: true
+require "./lib/canvas/version"
 
 Gem::Specification.new do |s|
   s.name        = "easol-canvas"
-  s.version     = "1.3.0"
+  s.version     = Canvas::VERSION
   s.summary     = "CLI to help with building themes for Easol"
   s.description = <<~EOF
     Canvas is a command line tool to help with building themes for Easol.
