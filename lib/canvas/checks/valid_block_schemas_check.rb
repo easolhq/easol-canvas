@@ -37,7 +37,8 @@ module Canvas
 
     def validate_format(filename, front_matter)
       return true if front_matter.is_a?(Hash) &&
-                     front_matter.values.all? { |attr| attr.is_a?(Hash) }
+                     (front_matter.key?("attributes") ? front_matter["attributes"] : front_matter).values.all? { |attr| attr.is_a?(Hash) }
+
 
       @offenses << Offense.new(
         message: "Invalid Block Schema: #{filename} - \nSchema is not in a valid format"
@@ -45,8 +46,7 @@ module Canvas
       false
     end
 
-    def validate_schema(filename, front_matter, custom_types)
-      schema = extract_schema(front_matter)
+    def validate_schema(filename, schema, custom_types)
       validator = Validator::BlockSchema.new(schema: schema, custom_types: custom_types)
       return if validator.validate
 
@@ -61,12 +61,6 @@ module Canvas
       extractor = Canvas::FrontMatterExtractor.new(file)
       front_matter = extractor.front_matter
       front_matter.nil? ? {} : YAML.safe_load(front_matter)
-    end
-
-    def extract_schema(front_matter)
-      {
-        "attributes" => Canvas::ExpandAttributes.call(front_matter)
-      }
     end
   end
 end

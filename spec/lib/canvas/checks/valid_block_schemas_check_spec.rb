@@ -20,6 +20,12 @@ describe Canvas::ValidBlockSchemasCheck do
         [
           have_attributes(
             message: <<~MESSAGE.chop.squeeze("\n")
+              Invalid Block Schema: blocks/heading/block.liquid - \n
+              Unrecognized keys: wrong_level
+            MESSAGE
+          ),
+          have_attributes(
+            message: <<~MESSAGE.chop.squeeze("\n")
               Invalid Block Schema: blocks/image/block.liquid - \n
               Schema is not in a valid format
             MESSAGE
@@ -28,6 +34,12 @@ describe Canvas::ValidBlockSchemasCheck do
             message: <<~MESSAGE.chop.squeeze("\n")
               Invalid Block Schema: blocks/hero/block.liquid - \n
               Attribute \"image\" is invalid - Missing required keys: type
+            MESSAGE
+          ),
+          have_attributes(
+            message: <<~MESSAGE.chop.squeeze("\n")
+              Invalid Block Schema: blocks/text_with_layout/block.liquid - \n
+              Unrecognized attribute `unknown`. Location: layout/0/elements/2
             MESSAGE
           )
         ]

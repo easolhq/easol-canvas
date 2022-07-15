@@ -1,0 +1,24 @@
+---
+attributes:
+  heading:
+    type: string
+    default: "Hello world"
+  subheading:
+    type: string
+  form_snippet:
+    type: string
+    hint: Configure a form with a third-party. Codes often begin with `<frame>` or `<script>`
+  image:
+    label: "My image"
+    type: image
+layout:
+  - label: "Content"
+    type: tab
+    elements:
+      - name: heading
+        type: attribute
+      - subheading
+      - unknown
+---
+
+<h1>{{ heading }}</h1>

@@ -1,0 +1,238 @@
+# frozen_string_literal: true
+
+describe Canvas::Validator::LayoutSchema do
+  subject(:validator) {
+    Canvas::Validator::LayoutSchema.new(schema: schema)
+  }
+
+  let(:attributes) do
+    {
+      "attributes" => [
+        {
+          "name" => "description",
+          "type" => "string"
+        },
+        {
+          "name" => "Heading",
+          "type" => "string"
+        },
+        {
+          "name" => "logo_alt",
+          "type" => "string"
+        },
+        {
+          "name" => "title",
+          "type" => "string"
+        },
+      ],
+    }
+  end
+
+  describe "on schema format validation" do
+    describe "when layout is empty" do
+      let(:schema) do
+        {
+          **attributes,
+        }
+      end
+
+      it "returns true" do
+        expect(validator.validate).to be_truthy
+      end
+    end
+
+    describe "when format is valid" do
+      let(:schema) do
+        {
+          **attributes,
+          "layout" => [
+            {
+              "label" => "Design",
+              "type" => "tab",
+              "elements" => [
+                "heading",
+                {
+                  "type" => "accordion",
+                  "label" => "Logo",
+                  "elements" => [
+                    "description",
+                    { "type" => "attribute", "name" => "Logo_alt" },
+                    "title"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      end
+
+      it "returns true" do
+        expect(validator.validate).to be_truthy
+      end
+    end
+
+    describe "when first level element type isn't tab" do
+      let(:schema) do
+        {
+          "layout" => [
+            {
+              "label" => "Design",
+              "type" => "attribute",
+              "elements" => [
+                "description"
+              ]
+            }
+          ]
+        }
+      end
+
+      it "returns false" do
+        expect(validator.validate).to be_falsey
+      end
+
+      it "contains errors" do
+        validator.validate
+
+        expect(validator.errors).to include(match("The property '#/layout/0/type' value \"attribute\" did not match constant 'tab' in schema"))
+      end
+    end
+
+    describe "when first level element hasn't children" do
+      let(:schema) do
+        {
+          "layout" => [
+            {
+              "label" => "Design",
+              "type" => "tab",
+              "elements" => []
+            }
+          ]
+        }
+      end
+
+      it "returns false" do
+        expect(validator.validate).to be_falsey
+      end
+
+      it "contains errors" do
+        validator.validate
+
+        expect(validator.errors).to include(match("The property '#/layout/0/elements' did not contain a minimum number of items 1 in schema"))
+      end
+    end
+
+    describe "when first level elementtype isn't tab" do
+      let(:schema) do
+        {
+          "layout" => [
+            {
+              "label" => "Design",
+              "type" => "tab",
+              "elements" => [
+                "description",
+                1234,
+                {
+                  "type" => "accordion",
+                  "label" => "Logo",
+                  "elements" => [
+                    "logo",
+                    "logo_alt",
+                    { "name" => "caption", "type" => "unknown" }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      end
+
+      it "returns false" do
+        expect(validator.validate).to be_falsey
+      end
+
+
+      it "contains errors" do
+        validator.validate
+
+        expect(validator.errors).to include(match("The property '#/layout/0/elements/1' of type integer did not match any of the required schemas."))
+        expect(validator.errors).to include(match("The property '#/layout/0/elements/2' of type object did not match any of the required schemas"))
+      end
+    end
+  end
+
+  describe "on business rule validation" do
+    describe "when duplicated attribute keys are present" do
+      let(:schema) do
+        {
+          **attributes,
+          "layout" => [
+            {
+              "label" => "Design",
+              "type" => "tab",
+              "elements" => [
+                "description",
+                "heading",
+                {
+                  "type" => "accordion",
+                  "label" => "Logo",
+                  "elements" => [
+                    "description",
+                    { "type" => "attribute", "name" => "logo_alt" },
+                    "title"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      end
+
+      it "returns false" do
+        expect(validator.validate).to be_falsey
+      end
+
+      it "contains errors" do
+        validator.validate
+
+        expect(validator.errors).to include("Duplicated attribute key `description` found. Location: layout/0/elements/0, layout/0/elements/2/elements/0")
+      end
+    end
+
+    describe "when unrecognized attribute keys are present" do
+      let(:schema) do
+        {
+          **attributes,
+          "layout" => [
+            {
+              "label" => "Design",
+              "type" => "tab",
+              "elements" => [
+                "heading",
+                "unknown",
+                {
+                  "type" => "accordion",
+                  "label" => "Logo",
+                  "elements" => [
+                    "description",
+                    { "type" => "attribute", "name" => "logo_alt" },
+                    "title"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      end
+
+      it "returns false" do
+        expect(validator.validate).to be_falsey
+      end
+
+      it "contains errors" do
+        validator.validate
+
+        expect(validator.errors).to include("Unrecognized attribute `unknown`. Location: layout/0/elements/1")
+      end
+    end
+  end
+end

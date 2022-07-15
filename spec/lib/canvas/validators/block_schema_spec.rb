@@ -9,17 +9,24 @@ describe Canvas::Validator::BlockSchema do
     context "when schema is valid" do
       let(:schema) {
         {
-          "attributes" => [
-            {
-              "name" => "my_title",
+          "attributes" => {
+            "my_title" => {
               "type" => "string"
             },
-            {
-              "name" => "my_color",
+            "my_color" => {
               "type" => "color",
               "label" => "My Color",
               "hint" => "Pick you favourite color",
               "default" => { "r" => 255, "g" => 255, "b" => 255 }
+            }
+          },
+          "layout" => [
+            {
+              "label" =>  "Design",
+              "type" => "tab",
+              "elements" => [
+                "my_title"
+              ]
             }
           ]
         }
@@ -33,12 +40,11 @@ describe Canvas::Validator::BlockSchema do
     context "when schema contains unrecognized keys" do
       let(:schema) {
         {
-          "attributes" => [
-            {
-              "name" => "my_title",
+          "attributes" => {
+            "my_title" => {
               "type" => "string"
             }
-          ],
+          },
           "unknown" => "Hello World"
         }
       }
@@ -78,16 +84,39 @@ describe Canvas::Validator::BlockSchema do
       end
     end
 
+    context "when 'layout' key is incorrect format" do
+      let(:schema) {
+        {
+          "attributes" => {
+            "my_string" => {
+              "type" => "string"
+            },
+          },
+          "layout" => [{
+            "label" => "Design",
+            "type" => "unknown"
+          }]
+        }
+      }
+
+      it "returns false with an error message" do
+        expect(validator.validate).to eq(false)
+
+        expect(validator.errors).to include(
+          match("The property '#/layout/0' did not contain a required property of 'elements")
+        )
+      end
+    end
+
     context "when an attribute is invalid" do
       let(:schema) {
         {
-          "attributes" => [
-            {
-              "name" => "my_title",
+          "attributes" => {
+            "my_title" => {
               "type" => "string",
               "unknown" => "hello"
             }
-          ]
+          }
         }
       }
 

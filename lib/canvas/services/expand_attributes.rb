@@ -30,6 +30,7 @@ module Canvas
       # @return [Array<Hash>] array of hashes that represent each attribute
       def call(attributes_hash)
         return [] if attributes_hash.nil?
+        return attributes_hash if attributes_hash.is_a?(Array)
 
         attributes_hash.each_with_object([]) do |(name, attribute_hash), attrs|
           attrs << attribute_hash.merge("name" => name)

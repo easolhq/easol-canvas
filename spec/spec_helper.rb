@@ -1,7 +1,8 @@
 require "tmpdir"
 require "fileutils"
+require "pry"
 
-Dir["./spec/support/**/*.rb"].each {|f| require f}
+Dir["./spec/support/**/*.rb"].each do |f| require f end
 require_relative "../lib/canvas"
 
 RSpec.configure do |config|
@@ -48,7 +49,7 @@ RSpec.configure do |config|
   # Setup a temp directory for use with the test suite, this means we can
   # operate on a file system without worrying about it
   config.before(:each) do
-    @directory = Dir.mktmpdir('canvas-spec-')
+    @directory = Dir.mktmpdir("canvas-spec-")
     @orig_directory = Dir.pwd
     Dir.chdir(@directory)
   end
@@ -82,11 +83,11 @@ RSpec.configure do |config|
 
   def capture_io(&block)
     err = nil
-    out = capture(:stdout) do
-      err = capture(:stderr) do
+    out = capture(:stdout) {
+      err = capture(:stderr) {
         block.call
-      end
-    end
+      }
+    }
     [out, err]
   end
 end
