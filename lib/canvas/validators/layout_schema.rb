@@ -72,28 +72,42 @@ module Canvas
       end
 
       def gather_attributes_from_layout_schema
-        attribute_keys = []
+        attributes = fetch_elements_of_type("attribute")
+        attributes.map do |(node, path)|
+          [
+            normalize_attribute(node.is_a?(Hash) ? node["name"] : node),
+            path
+          ]
+        end
+      end
 
-        fetch_attribute_type = ->(node, path) {
+      # @param type [String] the element type to fetch
+      # @return [Array<Hash, String>] a flat array of elements that match
+      #   the given type
+      def fetch_elements_of_type(type)
+        elements = []
+
+        fetch_element = ->(node, path) {
+          if type == "attribute" && node.is_a?(String)
+            elements << [node, path]
+          elsif node["type"] == type
+            elements << [node, path]
+          end
+
           if node.is_a?(Hash) && node.key?("elements")
             node["elements"].each_with_index do |element, i|
               current_path = "#{path}/elements/#{i}"
-              fetch_attribute_type.call(element, current_path)
+              fetch_element.call(element, current_path)
             end
-          else
-            attribute_keys << [
-              normalize_attribute(node.is_a?(Hash) ? node["name"] : node),
-              path
-            ]
           end
         }
 
         layout_schema.each_with_index do |tab, i|
           current_path = "layout/#{i}"
-          fetch_attribute_type.call(tab, current_path)
+          fetch_element.call(tab, current_path)
         end
 
-        attribute_keys
+        elements
       end
 
       def ensure_valid_format
