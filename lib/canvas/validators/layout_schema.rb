@@ -48,6 +48,8 @@ module Canvas
 
       private
 
+      attr_reader :schema
+
       def ensure_no_duplicate_keys
         attributes = gather_attributes_from_layout_schema
         duplicates =
@@ -64,7 +66,7 @@ module Canvas
 
       def ensure_no_unrecognized_keys
         attributes = gather_attributes_from_layout_schema
-        defined_attributes = @schema["attributes"]&.map { |definition| normalize_attribute(definition["name"]) } || []
+        defined_attributes = schema["attributes"]&.map { |definition| normalize_attribute(definition["name"]) } || []
 
         attributes.each do |attribute, location|
           @errors << "Unrecognized attribute `#{attribute}`. Location: #{location}" unless defined_attributes.include?(attribute)
@@ -120,7 +122,7 @@ module Canvas
       end
 
       def layout_schema
-        @schema["layout"] || []
+        schema["layout"] || []
       end
 
       def schema_definition
