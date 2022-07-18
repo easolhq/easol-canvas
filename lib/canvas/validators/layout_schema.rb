@@ -9,23 +9,39 @@ module Canvas
     # This class is used to validate a layout definition, part of block schema.
     # Example of a valid layout definition:
     # {
+    #   "attributes" => [
+    #     {
+    #       "name" => "title",
+    #       "type" => "string"
+    #     }
+    #     ...
+    #   ],
     #   "layout" => [
-    #   {
-    #      "label" => "Design",
-    #      "type" => "tab",
-    #     "elements" => [
-    #       "heading",
-    #       {
-    #         "type" => "accordion",
-    #         "label" => "Logo",
+    #     {
+    #       "label" => "Design",
+    #       "type" => "tab",
     #         "elements" => [
-    #           "description",
-    #           { "type" => "attribute", "name" => "logo_alt" },
-    #           "title"
-    #         ]
-    #       }
-    #     ]
-    #   }]
+    #         "heading",
+    #         {
+    #           "type" => "accordion",
+    #           "label" => "Logo",
+    #           "elements" => [
+    #             "description",
+    #             { "type" => "attribute", "name" => "logo_alt" },
+    #             "title"
+    #           ]
+    #         },
+    #         {
+    #           "type" => "accordion_toggle",
+    #           "toggle_attribute" => "cta_enabled",
+    #           "elements" => [
+    #             "cta_text",
+    #             "cta_target"
+    #           ]
+    #         }
+    #       ]
+    #     }
+    #   ]
     # }
     class LayoutSchema
       attr_reader :errors
@@ -41,6 +57,7 @@ module Canvas
         if ensure_valid_format
           ensure_no_unrecognized_keys
           ensure_no_duplicate_keys
+          ensure_accordion_toggles_are_valid
         end
 
         @errors.empty?
@@ -119,6 +136,19 @@ module Canvas
 
         @errors += result
         false
+      end
+
+      def ensure_accordion_toggles_are_valid
+        accordion_toggles = fetch_elements_of_type("accordion_toggle")
+        accordion_toggles.each do |accordion_toggle, location|
+          toggle_attribute = schema["attributes"]&.detect { |attr|
+            attr["name"] == accordion_toggle["toggle_attribute"]
+          }
+
+          if toggle_attribute["type"] != "boolean"
+            @errors << "The toggle_attribute in accordion_toggle must be a boolean. Location: #{location}"
+          end
+        end
       end
 
       def layout_schema
