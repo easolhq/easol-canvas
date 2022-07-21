@@ -24,7 +24,11 @@ describe Canvas::Validator::LayoutSchema do
           "name" => "title",
           "type" => "string"
         },
-      ],
+        {
+          "name" => "show_title",
+          "type" => "boolean"
+        }
+      ]
     }
   end
 
@@ -158,6 +162,70 @@ describe Canvas::Validator::LayoutSchema do
         expect(validator.errors).to include(match("The property '#/layout/0/elements/2' of type object did not match any of the required schemas"))
       end
     end
+
+    context "when layout includes accordion_toggle" do
+      let(:schema) do
+        {
+          **attributes,
+          "layout" => [
+            {
+              "label" => "Design",
+              "type" => "tab",
+              "elements" => [
+                "heading",
+                {
+                  "type" => "accordion_toggle",
+                  "toggle_attribute" => "show_title",
+                  "elements" => [
+                    "title",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      end
+
+      it "returns true" do
+        expect(validator.validate).to be_truthy
+      end
+    end
+
+    context "when layout includes accordion_toggle with invalid format" do
+      let(:schema) do
+        {
+          **attributes,
+          "layout" => [
+            {
+              "label" => "Design",
+              "type" => "tab",
+              "elements" => [
+                "heading",
+                {
+                  "type" => "accordion_toggle",
+                  "elements" => [
+                    "title",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      end
+
+      it "returns false" do
+        expect(validator.validate).to be_falsey
+      end
+
+
+      it "contains errors" do
+        validator.validate
+
+        expect(validator.errors).to include(match("The property '#/layout/0/elements/1' of type object did not match any of the required schemas."))
+      end
+    end
   end
 
   describe "on business rule validation" do
@@ -232,6 +300,76 @@ describe Canvas::Validator::LayoutSchema do
         validator.validate
 
         expect(validator.errors).to include("Unrecognized attribute `unknown`. Location: layout/0/elements/1")
+      end
+    end
+
+    context "when accordion_toggle has a toggle_attribute that is unrecognized" do
+      let(:schema) do
+        {
+          **attributes,
+          "layout" => [
+            {
+              "label" => "Design",
+              "type" => "tab",
+              "elements" => [
+                "heading",
+                {
+                  "type" => "accordion_toggle",
+                  "toggle_attribute" => "unknown",
+                  "elements" => [
+                    "title",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      end
+
+      it "returns false" do
+        expect(validator.validate).to be_falsey
+      end
+
+      it "contains errors" do
+        validator.validate
+
+        expect(validator.errors).to include("The toggle_attribute in accordion_toggle is unrecognized. Location: layout/0/elements/1")
+      end
+    end
+
+    context "when accordion_toggle has a toggle_attribute that is not a boolean" do
+      let(:schema) do
+        {
+          **attributes,
+          "layout" => [
+            {
+              "label" => "Design",
+              "type" => "tab",
+              "elements" => [
+                "heading",
+                {
+                  "type" => "accordion_toggle",
+                  "toggle_attribute" => "description",
+                  "elements" => [
+                    "title",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      end
+
+      it "returns false" do
+        expect(validator.validate).to be_falsey
+      end
+
+      it "contains errors" do
+        validator.validate
+
+        expect(validator.errors).to include("The toggle_attribute in accordion_toggle must be a boolean. Location: layout/0/elements/1")
       end
     end
   end

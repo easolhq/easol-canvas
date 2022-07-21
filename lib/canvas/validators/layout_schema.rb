@@ -9,23 +9,39 @@ module Canvas
     # This class is used to validate a layout definition, part of block schema.
     # Example of a valid layout definition:
     # {
+    #   "attributes" => [
+    #     {
+    #       "name" => "title",
+    #       "type" => "string"
+    #     }
+    #     ...
+    #   ],
     #   "layout" => [
-    #   {
-    #      "label" => "Design",
-    #      "type" => "tab",
-    #     "elements" => [
-    #       "heading",
-    #       {
-    #         "type" => "accordion",
-    #         "label" => "Logo",
+    #     {
+    #       "label" => "Design",
+    #       "type" => "tab",
     #         "elements" => [
-    #           "description",
-    #           { "type" => "attribute", "name" => "logo_alt" },
-    #           "title"
-    #         ]
-    #       }
-    #     ]
-    #   }]
+    #         "heading",
+    #         {
+    #           "type" => "accordion",
+    #           "label" => "Logo",
+    #           "elements" => [
+    #             "description",
+    #             { "type" => "attribute", "name" => "logo_alt" },
+    #             "title"
+    #           ]
+    #         },
+    #         {
+    #           "type" => "accordion_toggle",
+    #           "toggle_attribute" => "cta_enabled",
+    #           "elements" => [
+    #             "cta_text",
+    #             "cta_target"
+    #           ]
+    #         }
+    #       ]
+    #     }
+    #   ]
     # }
     class LayoutSchema
       attr_reader :errors
@@ -41,6 +57,7 @@ module Canvas
         if ensure_valid_format
           ensure_no_unrecognized_keys
           ensure_no_duplicate_keys
+          ensure_accordion_toggles_are_valid
         end
 
         @errors.empty?
@@ -48,8 +65,10 @@ module Canvas
 
       private
 
+      attr_reader :schema
+
       def ensure_no_duplicate_keys
-        attributes = gather_attributes_from_layout_schema
+        attributes = fetch_all_attribute_names
         duplicates =
           attributes
           .group_by { |(key)| key }
@@ -63,37 +82,54 @@ module Canvas
       end
 
       def ensure_no_unrecognized_keys
-        attributes = gather_attributes_from_layout_schema
-        defined_attributes = @schema["attributes"]&.map { |definition| normalize_attribute(definition["name"]) } || []
+        attributes = fetch_all_attribute_names
+        defined_attributes = schema["attributes"]&.map { |definition| normalize_attribute(definition["name"]) } || []
 
         attributes.each do |attribute, location|
           @errors << "Unrecognized attribute `#{attribute}`. Location: #{location}" unless defined_attributes.include?(attribute)
         end
       end
 
-      def gather_attributes_from_layout_schema
-        attribute_keys = []
+      # @return [Array<Array(String, String)>] an array of all the attribute names that
+      #         are mentioned in the layout schema, along with its path. The names are
+      #         normalized, i.e. downcased.
+      def fetch_all_attribute_names
+        attributes = fetch_elements_of_type("attribute")
+        attributes.map do |(node, path)|
+          [
+            normalize_attribute(node.is_a?(Hash) ? node["name"] : node),
+            path
+          ]
+        end
+      end
 
-        fetch_attribute_type = ->(node, path) {
+      # @param type [String] the element type to fetch
+      # @return [Array<Array(<Hash, String>, String)] an array of elements that match
+      #   the given type. Each element is an array containing the node and its path.
+      def fetch_elements_of_type(type)
+        elements = []
+
+        fetch_element = ->(node, path) {
+          if type == "attribute" && node.is_a?(String)
+            elements << [node, path]
+          elsif node["type"] == type
+            elements << [node, path]
+          end
+
           if node.is_a?(Hash) && node.key?("elements")
             node["elements"].each_with_index do |element, i|
               current_path = "#{path}/elements/#{i}"
-              fetch_attribute_type.call(element, current_path)
+              fetch_element.call(element, current_path)
             end
-          else
-            attribute_keys << [
-              normalize_attribute(node.is_a?(Hash) ? node["name"] : node),
-              path
-            ]
           end
         }
 
         layout_schema.each_with_index do |tab, i|
           current_path = "layout/#{i}"
-          fetch_attribute_type.call(tab, current_path)
+          fetch_element.call(tab, current_path)
         end
 
-        attribute_keys
+        elements
       end
 
       def ensure_valid_format
@@ -105,8 +141,23 @@ module Canvas
         false
       end
 
+      def ensure_accordion_toggles_are_valid
+        accordion_toggles = fetch_elements_of_type("accordion_toggle")
+        accordion_toggles.each do |accordion_toggle, location|
+          toggle_attribute = schema["attributes"]&.detect { |attr|
+            attr["name"] == accordion_toggle["toggle_attribute"]
+          }
+
+          if toggle_attribute.nil?
+            @errors << "The toggle_attribute in accordion_toggle is unrecognized. Location: #{location}"
+          elsif toggle_attribute["type"] != "boolean"
+            @errors << "The toggle_attribute in accordion_toggle must be a boolean. Location: #{location}"
+          end
+        end
+      end
+
       def layout_schema
-        @schema["layout"] || []
+        schema["layout"] || []
       end
 
       def schema_definition

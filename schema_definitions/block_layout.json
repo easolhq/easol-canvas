@@ -24,22 +24,42 @@
           "items": {
             "oneOf": [
               { "type": "string" },
-              { "$ref": "#/$defs/component" },
+              { "$ref": "#/$defs/accordion" },
+              { "$ref": "#/$defs/accordion_toggle" },
               { "$ref": "#/$defs/attribute" }
             ]
           }
         }
       }
     },
-    "component": {
+    "accordion": {
       "type": "object",
       "required": ["label", "type"],
       "properties": {
         "type": {
           "type": "string",
-          "enum": ["accordion"]
+          "const": "accordion"
         },
         "label": {
+          "type": "string"
+        },
+        "elements": {
+          "type": "array",
+          "items": {
+            "oneOf": [{ "type": "string" }, { "$ref": "#/$defs/attribute" }]
+          }
+        }
+      }
+    },
+    "accordion_toggle": {
+      "type": "object",
+      "required": ["type", "toggle_attribute", "elements"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "accordion_toggle"
+        },
+        "toggle_attribute": {
           "type": "string"
         },
         "elements": {
