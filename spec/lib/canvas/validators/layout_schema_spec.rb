@@ -303,6 +303,41 @@ describe Canvas::Validator::LayoutSchema do
       end
     end
 
+    context "when accordion_toggle has a toggle_attribute that is unrecognized" do
+      let(:schema) do
+        {
+          **attributes,
+          "layout" => [
+            {
+              "label" => "Design",
+              "type" => "tab",
+              "elements" => [
+                "heading",
+                {
+                  "type" => "accordion_toggle",
+                  "toggle_attribute" => "unknown",
+                  "elements" => [
+                    "title",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      end
+
+      it "returns false" do
+        expect(validator.validate).to be_falsey
+      end
+
+      it "contains errors" do
+        validator.validate
+
+        expect(validator.errors).to include("The toggle_attribute in accordion_toggle is unrecognized. Location: layout/0/elements/1")
+      end
+    end
+
     context "when accordion_toggle has a toggle_attribute that is not a boolean" do
       let(:schema) do
         {

@@ -145,7 +145,9 @@ module Canvas
             attr["name"] == accordion_toggle["toggle_attribute"]
           }
 
-          if toggle_attribute["type"] != "boolean"
+          if toggle_attribute.nil?
+            @errors << "The toggle_attribute in accordion_toggle is unrecognized. Location: #{location}"
+          elsif toggle_attribute["type"] != "boolean"
             @errors << "The toggle_attribute in accordion_toggle must be a boolean. Location: #{location}"
           end
         end
