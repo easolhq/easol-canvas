@@ -68,7 +68,7 @@ module Canvas
       attr_reader :schema
 
       def ensure_no_duplicate_keys
-        attributes = gather_attributes_from_layout_schema
+        attributes = fetch_all_attribute_names
         duplicates =
           attributes
           .group_by { |(key)| key }
@@ -82,7 +82,7 @@ module Canvas
       end
 
       def ensure_no_unrecognized_keys
-        attributes = gather_attributes_from_layout_schema
+        attributes = fetch_all_attribute_names
         defined_attributes = schema["attributes"]&.map { |definition| normalize_attribute(definition["name"]) } || []
 
         attributes.each do |attribute, location|
@@ -90,7 +90,10 @@ module Canvas
         end
       end
 
-      def gather_attributes_from_layout_schema
+      # @return [Array<Array(String, String)>] an array of all the attribute names that
+      #         are mentioned in the layout schema, along with its path. The names are
+      #         normalized, i.e. downcased.
+      def fetch_all_attribute_names
         attributes = fetch_elements_of_type("attribute")
         attributes.map do |(node, path)|
           [
@@ -101,8 +104,8 @@ module Canvas
       end
 
       # @param type [String] the element type to fetch
-      # @return [Array<Hash, String>] a flat array of elements that match
-      #   the given type
+      # @return [Array<Array(<Hash, String>, String)] an array of elements that match
+      #   the given type. Each element is an array containing the node and its path.
       def fetch_elements_of_type(type)
         elements = []
 
