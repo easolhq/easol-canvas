@@ -14,5 +14,9 @@
   "heading": {
     "name": "Heading",
     "category": "Text"
+  },
+  "invalid_yaml": {
+    "name": "Invalid YAML",
+    "category": "Text"
   }
 }

@@ -22,8 +22,9 @@ module Canvas
     def run
       custom_types = Canvas::FetchCustomTypes.call
       block_files.each do |filename|
-        file = File.read(filename)
-        front_matter = extract_front_matter(file)
+        front_matter = extract_front_matter(filename)
+        next unless front_matter
+
         validate_format(filename, front_matter) &&
           validate_schema(filename, front_matter, custom_types)
       end
@@ -57,10 +58,18 @@ module Canvas
       end
     end
 
-    def extract_front_matter(file)
+    def extract_front_matter(filename)
+      file = File.read(filename)
+
       extractor = Canvas::FrontMatterExtractor.new(file)
       front_matter = extractor.front_matter
       front_matter.nil? ? {} : YAML.safe_load(front_matter)
+    rescue Psych::SyntaxError
+      @offenses << Offense.new(
+        message: "Invalid Block Schema: #{filename} - \nFront matter's YAML is not in a valid format"
+      )
+
+      nil
     end
   end
 end
