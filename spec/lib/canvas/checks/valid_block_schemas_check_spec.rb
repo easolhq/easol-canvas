@@ -41,6 +41,12 @@ describe Canvas::ValidBlockSchemasCheck do
               Invalid Block Schema: blocks/text_with_layout/block.liquid - \n
               Unrecognized attribute `unknown`. Location: layout/0/elements/2
             MESSAGE
+          ),
+          have_attributes(
+            message: <<~MESSAGE.chop.squeeze("\n")
+              Invalid Block Schema: blocks/invalid_yaml/block.liquid - \n
+              Front matter's YAML is not in a valid format
+            MESSAGE
           )
         ]
       )
