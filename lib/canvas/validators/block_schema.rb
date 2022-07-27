@@ -59,7 +59,7 @@ module Canvas
 
       def ensure_valid_format
         return true if schema.is_a?(Hash) &&
-                       (schema["attributes"].nil? || attributes_array_of_hashes?(schema))
+                       (schema["attributes"].nil? || attributes_hash_of_hashes?(schema))
 
         @errors << "Schema is not in a valid format"
         false
@@ -86,7 +86,8 @@ module Canvas
       def ensure_attributes_are_valid
         return true unless schema["attributes"]
 
-        schema["attributes"].each do |attribute_schema|
+        attributes = Canvas::ExpandAttributes.call(schema["attributes"])
+        attributes.each do |attribute_schema|
           attr_validator = Validator::SchemaAttribute.new(
             attribute: attribute_schema,
             custom_types: @custom_types
@@ -98,22 +99,17 @@ module Canvas
         end
       end
 
-      def attributes_array_of_hashes?(schema)
-        schema["attributes"].is_a?(Array) &&
-          schema["attributes"].all? { |attr| attr.is_a?(Hash) }
+      def attributes_hash_of_hashes?(schema)
+        schema["attributes"].is_a?(Hash) &&
+          schema["attributes"].values.all? { |attr| attr.is_a?(Hash) }
       end
 
+      # To support older schemas that do not nest the attributes
+      # under the `attributes` key.
       def normalize_schema(schema)
-        if schema.key?("attributes")
-          {
-            **schema,
-            "attributes" => Canvas::ExpandAttributes.call(schema["attributes"])
-          }
-        else
-          {
-            "attributes" => Canvas::ExpandAttributes.call(schema)
-          }
-        end
+        return schema if schema.key?("attributes")
+
+        { "attributes" => schema }
       end
     end
   end
