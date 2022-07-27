@@ -162,7 +162,7 @@ module Canvas
 
       def schema_definition
         File.read(
-          File.join(File.dirname(__FILE__), "../../../", "schema_definitions", "block_layout.json")
+          File.join(File.dirname(__FILE__), "../../../", "schema_definitions", "layout.json")
         )
       end
 
