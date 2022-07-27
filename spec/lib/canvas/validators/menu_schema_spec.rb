@@ -156,61 +156,61 @@ describe Canvas::Validator::MenuSchema do
           expect(validator.errors).to include("Attribute \"images\" is invalid - \"type\" must be one of: image, product, post, page, link, text, string, boolean, number, color, select, range, radio, variant")
         end
       end
-    end
 
-    context "when the `attributes` has reserved key names" do
-      let(:schema) {
-        {
-          "attributes" => [
-            {
-              "name" => "items",
-              "type" => "String",
-              "label" => "I'm invalid"
-            }
-          ]
+      context "when the `attributes` has reserved key names" do
+        let(:schema) {
+          {
+            "attributes" => [
+              {
+                "name" => "items",
+                "type" => "String",
+                "label" => "I'm invalid"
+              }
+            ]
+          }
         }
-      }
 
-      it "returns false with errors" do
-        expect(validator.validate).to eq(false)
-        expect(validator.errors).to include("Attribute \"items\" is invalid - \"name\" can't be one of these reserved words: page, company, cart, flash, block, items, type")
+        it "returns false with errors" do
+          expect(validator.validate).to eq(false)
+          expect(validator.errors).to include("Attribute \"items\" is invalid - \"name\" can't be one of these reserved words: page, company, cart, flash, block, items, type")
+        end
       end
-    end
 
-    context "when schema is using a custom type" do
-      let(:card_type) {
-        {
-          "key" => "Card",
-          "name" => "Card",
-          "attributes" => [
-            { "name" => "title", "type" => "string", "default" => "Hello world" },
-            { "name" => "body", "type" => "text" }
-          ]
+      context "when schema is using a custom type" do
+        let(:card_type) {
+          {
+            "key" => "Card",
+            "name" => "Card",
+            "attributes" => [
+              { "name" => "title", "type" => "string", "default" => "Hello world" },
+              { "name" => "body", "type" => "text" }
+            ]
+          }
         }
-      }
 
-      subject(:validator) {
-        Canvas::Validator::MenuSchema.new(schema: schema, custom_types: [card_type])
-      }
-
-      let(:schema) {
-        {
-          "attributes" => [
-            {
-              "name" => "title",
-              "type" => "string"
-            },
-            {
-              "name" => "cards",
-              "type" => "Card",
-              "array" => true
-            }
-          ]
+        subject(:validator) {
+          Canvas::Validator::MenuSchema.new(schema: schema, custom_types: [card_type])
         }
-      }
 
-      it "returns true" do
-        expect(validator.validate).to eq(true)
+        let(:schema) {
+          {
+            "attributes" => [
+              {
+                "name" => "title",
+                "type" => "string"
+              },
+              {
+                "name" => "cards",
+                "type" => "Card",
+                "array" => true
+              }
+            ]
+          }
+        }
+
+        it "returns true" do
+          expect(validator.validate).to eq(true)
+        end
       end
     end
   end
