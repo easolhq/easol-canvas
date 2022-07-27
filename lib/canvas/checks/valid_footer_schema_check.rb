@@ -51,8 +51,7 @@ module Canvas
         front_matter["attributes"].values.all? { |attr| attr.is_a?(Hash) }
     end
 
-    def validate_schema(front_matter)
-      schema = extract_schema(front_matter)
+    def validate_schema(schema)
       validator = Validator::FooterSchema.new(
         schema: schema,
         custom_types: Canvas::FetchCustomTypes.call
@@ -70,12 +69,6 @@ module Canvas
       extractor = Canvas::FrontMatterExtractor.new(file)
       front_matter = extractor.front_matter
       front_matter.nil? ? {} : YAML.safe_load(front_matter)
-    end
-
-    def extract_schema(front_matter)
-      front_matter.merge(
-        "attributes" => Canvas::ExpandAttributes.call(front_matter["attributes"])
-      )
     end
   end
 end

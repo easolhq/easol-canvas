@@ -120,17 +120,15 @@ describe Canvas::Validator::MenuSchema do
       context "when the `attributes` is valid" do
         let(:schema) {
           {
-            "attributes" => [
-              {
-                "name" => "title",
+            "attributes" => {
+              "title" => {
                 "type" => "string"
               },
-              {
-                "name" => "images",
+              "images" => {
                 "type" => "image",
                 "label" => "Cool image"
               }
-            ]
+            }
           }
         }
 
@@ -142,12 +140,11 @@ describe Canvas::Validator::MenuSchema do
       context "when the `attributes` has invalid attributes" do
         let(:schema) {
           {
-            "attributes" => [
-              {
-                "name" => "images",
+            "attributes" => {
+              "images" => {
                 "type" => "invalid"
               }
-            ]
+            }
           }
         }
 
@@ -160,13 +157,12 @@ describe Canvas::Validator::MenuSchema do
       context "when the `attributes` has reserved key names" do
         let(:schema) {
           {
-            "attributes" => [
-              {
-                "name" => "items",
+            "attributes" => {
+              "items" => {
                 "type" => "String",
                 "label" => "I'm invalid"
               }
-            ]
+            }
           }
         }
 
@@ -194,17 +190,15 @@ describe Canvas::Validator::MenuSchema do
 
         let(:schema) {
           {
-            "attributes" => [
-              {
-                "name" => "title",
+            "attributes" => {
+              "title" => {
                 "type" => "string"
               },
-              {
-                "name" => "cards",
+              "cards" => {
                 "type" => "Card",
                 "array" => true
               }
-            ]
+            }
           }
         }
 
@@ -216,17 +210,15 @@ describe Canvas::Validator::MenuSchema do
       context "when the `layout` is valid" do
         let(:schema) {
           {
-            "attributes" => [
-              {
-                "name" => "title",
+            "attributes" => {
+              "title" => {
                 "type" => "string"
               },
-              {
-                "name" => "images",
+              "images" => {
                 "type" => "image",
                 "label" => "Cool image"
               }
-            ],
+            },
             "layout" => [
               {
                 "type" => "tab",
@@ -248,17 +240,15 @@ describe Canvas::Validator::MenuSchema do
       context "when 'layout' key is incorrect format" do
         let(:schema) {
           {
-            "attributes" => [
-              {
-                "name" => "title",
+            "attributes" => {
+              "title" => {
                 "type" => "string"
               },
-              {
-                "name" => "images",
+              "images" => {
                 "type" => "image",
                 "label" => "Cool image"
               }
-            ],
+            },
             "layout" => [
               {
                 "label" => "Design",
