@@ -7,32 +7,26 @@ describe Canvas::Validator::LayoutSchema do
 
   let(:attributes) do
     {
-      "attributes" => [
-        {
-          "name" => "description",
+      "attributes" => {
+        "description" => {
           "type" => "string"
         },
-        {
-          "name" => "Heading",
+        "Heading" => {
           "type" => "string"
         },
-        {
-          "name" => "logo_alt",
+        "logo_alt" => {
           "type" => "string"
         },
-        {
-          "name" => "title",
+        "title" => {
           "type" => "string"
         },
-        {
-          "name" => "show_title",
+        "show_title" => {
           "type" => "boolean"
         },
-        {
-          "name" => "SHOUT",
+        "SHOUT" => {
           "type" => "Boolean"
         }
-      ]
+      }
     }
   end
 

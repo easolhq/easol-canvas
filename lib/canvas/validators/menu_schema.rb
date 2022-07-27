@@ -7,21 +7,33 @@ module Canvas
     #
     # Example:
     # {
-    #   "max_item_levels": 2,
-    #   "supports_open_new_tab": "true",
-    #   "attributes": {
-    #      "fixed": {
-    #         "group": "design",
-    #         "label": "Fixed when scrolling",
-    #         "hint": "The menu will stay fixed to the top when scrolling down the page.",
-    #         "type": "boolean",
-    #         "default: "false"
+    #   "max_item_levels" => 2,
+    #   "supports_open_new_tab" => "true",
+    #   "attributes" => {
+    #      "fixed" => {
+    #         "group" => "design",
+    #         "label" => "Fixed when scrolling",
+    #         "hint" => "The menu will stay fixed to the top when scrolling down the page.",
+    #         "type" => "boolean",
+    #         "default" => "false"
+    #      },
+    #      "background_color" => {
+    #        "type" => "color"
     #      }
-    #   }
+    #   },
+    #   "layout" => [
+    #     {
+    #       "type" => "tab",
+    #       "label" => "Content",
+    #       "elements" => [
+    #         "fixed",
+    #         "background_color"
+    #       ]
+    #     }
+    #   ]
     # }
-    #
     class MenuSchema
-      PERMITTED_KEYS = %w[max_item_levels supports_open_new_tab attributes].freeze
+      PERMITTED_KEYS = %w[max_item_levels supports_open_new_tab attributes layout].freeze
       ADDITIONAL_RESERVED_NAMES = %w[items type].freeze
 
       attr_reader :schema, :errors
@@ -38,6 +50,7 @@ module Canvas
         if ensure_valid_format
           ensure_no_unrecognized_keys
           ensure_max_item_levels_is_valid
+          ensure_layout_is_valid
           ensure_attributes_are_valid
         end
 
@@ -48,7 +61,7 @@ module Canvas
 
       def ensure_valid_format
         return true if schema.is_a?(Hash) &&
-                       (schema["attributes"].nil? || attributes_array_of_hashes?(schema))
+                       (schema["attributes"].nil? || attributes_hash_of_hashes?(schema))
 
         @errors << "Schema is not in a valid format"
         false
@@ -70,10 +83,21 @@ module Canvas
         false
       end
 
+      def ensure_layout_is_valid
+        return true unless schema["layout"]
+
+        layout_validator = LayoutSchema.new(schema: @schema)
+        return true if layout_validator.validate
+
+        @errors += layout_validator.errors
+        false
+      end
+
       def ensure_attributes_are_valid
         return true unless schema["attributes"]
 
-        schema["attributes"].each do |attribute_schema|
+        attributes = Canvas::ExpandAttributes.call(schema["attributes"])
+        attributes.each do |attribute_schema|
           attr_validator = Validator::SchemaAttribute.new(
             attribute: attribute_schema,
             custom_types: @custom_types,
@@ -86,9 +110,9 @@ module Canvas
         end
       end
 
-      def attributes_array_of_hashes?(schema)
-        schema["attributes"].is_a?(Array) &&
-          schema["attributes"].all? { |attr| attr.is_a?(Hash) }
+      def attributes_hash_of_hashes?(schema)
+        schema["attributes"].is_a?(Hash) &&
+          schema["attributes"].values.all? { |attr| attr.is_a?(Hash) }
       end
     end
   end
