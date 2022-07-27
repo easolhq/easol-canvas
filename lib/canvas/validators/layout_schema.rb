@@ -9,13 +9,12 @@ module Canvas
     # This class is used to validate a layout definition, part of block schema.
     # Example of a valid layout definition:
     # {
-    #   "attributes" => [
-    #     {
-    #       "name" => "title",
+    #   "attributes" => {
+    #     "title" => {
     #       "type" => "string"
     #     }
     #     ...
-    #   ],
+    #   },
     #   "layout" => [
     #     {
     #       "label" => "Design",
@@ -83,7 +82,7 @@ module Canvas
 
       def ensure_no_unrecognized_keys
         attributes = fetch_all_attribute_names
-        defined_attributes = schema["attributes"]&.map { |definition| normalize_attribute(definition["name"]) } || []
+        defined_attributes = expanded_attributes.map { |definition| normalize_attribute(definition["name"]) } || []
 
         attributes.each do |attribute, location|
           @errors << "Unrecognized attribute `#{attribute}`. Location: #{location}" unless defined_attributes.include?(attribute)
@@ -144,7 +143,7 @@ module Canvas
       def ensure_accordion_toggles_are_valid
         accordion_toggles = fetch_elements_of_type("accordion_toggle")
         accordion_toggles.each do |accordion_toggle, location|
-          toggle_attribute = schema["attributes"]&.detect { |attr|
+          toggle_attribute = expanded_attributes.detect { |attr|
             attr["name"] == accordion_toggle["toggle_attribute"]
           }
 
@@ -168,6 +167,12 @@ module Canvas
 
       def normalize_attribute(name)
         name.strip.downcase
+      end
+
+      def expanded_attributes
+        return [] if schema["attributes"].nil?
+
+        @_expanded_attributes ||= Canvas::ExpandAttributes.call(schema["attributes"])
       end
     end
   end
