@@ -212,6 +212,69 @@ describe Canvas::Validator::MenuSchema do
           expect(validator.validate).to eq(true)
         end
       end
+
+      context "when the `layout` is valid" do
+        let(:schema) {
+          {
+            "attributes" => [
+              {
+                "name" => "title",
+                "type" => "string"
+              },
+              {
+                "name" => "images",
+                "type" => "image",
+                "label" => "Cool image"
+              }
+            ],
+            "layout" => [
+              {
+                "type" => "tab",
+                "label" =>  "Design",
+                "elements" => [
+                  "title",
+                  "images"
+                ]
+              }
+            ]
+          }
+        }
+
+        it "returns true" do
+          expect(validator.validate).to eq(true)
+        end
+      end
+
+      context "when 'layout' key is incorrect format" do
+        let(:schema) {
+          {
+            "attributes" => [
+              {
+                "name" => "title",
+                "type" => "string"
+              },
+              {
+                "name" => "images",
+                "type" => "image",
+                "label" => "Cool image"
+              }
+            ],
+            "layout" => [
+              {
+                "label" => "Design",
+                "type" => "unknown"
+              }
+            ]
+          }
+        }
+
+        it "returns false with an error message" do
+          expect(validator.validate).to eq(false)
+          expect(validator.errors).to include(
+            match("The property '#/layout/0' did not contain a required property of 'elements")
+          )
+        end
+      end
     end
   end
 end

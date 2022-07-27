@@ -21,7 +21,7 @@ module Canvas
     # }
     #
     class MenuSchema
-      PERMITTED_KEYS = %w[max_item_levels supports_open_new_tab attributes].freeze
+      PERMITTED_KEYS = %w[max_item_levels supports_open_new_tab attributes layout].freeze
       ADDITIONAL_RESERVED_NAMES = %w[items type].freeze
 
       attr_reader :schema, :errors
@@ -38,6 +38,7 @@ module Canvas
         if ensure_valid_format
           ensure_no_unrecognized_keys
           ensure_max_item_levels_is_valid
+          ensure_layout_is_valid
           ensure_attributes_are_valid
         end
 
@@ -67,6 +68,16 @@ module Canvas
         return true if [1, 2, 3].include?(schema["max_item_levels"].to_i)
 
         @errors << "\"max_item_levels\" must be a number between 1 and 3"
+        false
+      end
+
+      def ensure_layout_is_valid
+        return true unless schema["layout"]
+
+        layout_validator = LayoutSchema.new(schema: @schema)
+        return true if layout_validator.validate
+
+        @errors += layout_validator.errors
         false
       end
 
