@@ -27,6 +27,10 @@ describe Canvas::Validator::LayoutSchema do
         {
           "name" => "show_title",
           "type" => "boolean"
+        },
+        {
+          "name" => "SHOUT",
+          "type" => "Boolean"
         }
       ]
     }
@@ -370,6 +374,35 @@ describe Canvas::Validator::LayoutSchema do
         validator.validate
 
         expect(validator.errors).to include("The toggle_attribute in accordion_toggle must be a boolean. Location: layout/0/elements/1")
+      end
+    end
+
+    context "when accordion_toggle has a toggle_attribute that is Boolean defined with a capital letter" do
+      let(:schema) do
+        {
+          **attributes,
+          "layout" => [
+            {
+              "label" => "Design",
+              "type" => "tab",
+              "elements" => [
+                "heading",
+                {
+                  "type" => "accordion_toggle",
+                  "toggle_attribute" => "SHOUT",
+                  "elements" => [
+                    "title",
+                    "SHOUT"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      end
+
+      it "is valid" do
+        expect(validator.validate).to be_truthy
       end
     end
   end

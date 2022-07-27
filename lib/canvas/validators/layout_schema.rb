@@ -150,7 +150,7 @@ module Canvas
 
           if toggle_attribute.nil?
             @errors << "The toggle_attribute in accordion_toggle is unrecognized. Location: #{location}"
-          elsif toggle_attribute["type"] != "boolean"
+          elsif toggle_attribute["type"]&.downcase != "boolean"
             @errors << "The toggle_attribute in accordion_toggle must be a boolean. Location: #{location}"
           end
         end
