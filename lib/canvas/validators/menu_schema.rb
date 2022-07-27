@@ -7,19 +7,31 @@ module Canvas
     #
     # Example:
     # {
-    #   "max_item_levels": 2,
-    #   "supports_open_new_tab": "true",
-    #   "attributes": {
-    #      "fixed": {
-    #         "group": "design",
-    #         "label": "Fixed when scrolling",
-    #         "hint": "The menu will stay fixed to the top when scrolling down the page.",
-    #         "type": "boolean",
-    #         "default: "false"
+    #   "max_item_levels" => 2,
+    #   "supports_open_new_tab" => "true",
+    #   "attributes" => {
+    #      "fixed" => {
+    #         "group" => "design",
+    #         "label" => "Fixed when scrolling",
+    #         "hint" => "The menu will stay fixed to the top when scrolling down the page.",
+    #         "type" => "boolean",
+    #         "default" => "false"
+    #      },
+    #      "background_color" => {
+    #        "type" => "color"
     #      }
-    #   }
+    #   },
+    #   "layout" => [
+    #     {
+    #       "type" => "tab",
+    #       "label" => "Content",
+    #       "elements" => [
+    #         "fixed",
+    #         "background_color"
+    #       ]
+    #     }
+    #   ]
     # }
-    #
     class MenuSchema
       PERMITTED_KEYS = %w[max_item_levels supports_open_new_tab attributes layout].freeze
       ADDITIONAL_RESERVED_NAMES = %w[items type].freeze

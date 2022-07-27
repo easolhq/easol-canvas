@@ -9,16 +9,24 @@ module Canvas
     # This class is used to validate a schema for a block.
     # Example of a valid block schema:
     # {
-    #   "attributes" => [
-    #     {
-    #       "name" => "my_title",
+    #   "attributes" => {
+    #     "my_title" => {
     #       "type" => "string"
     #     },
-    #     {
-    #       "name" => "my_color",
+    #     "my_color" => {
     #       "type" => "color",
     #       "label" => "My color",
     #       "hint" => "Select your favourite color"
+    #     }
+    #   },
+    #   "layout" => [
+    #     {
+    #       "type" => "tab",
+    #       "label" => "Content",
+    #       "elements" => [
+    #         "my_title",
+    #         "my_color"
+    #       ]
     #     }
     #   ]
     # }

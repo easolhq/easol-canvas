@@ -11,19 +11,27 @@ module Canvas
     #
     # Example:
     # {
-    #   "max_item_levels": 2,
-    #   "supports_open_new_tab": "true",
-    #   "attributes": {
-    #      "fixed": {
-    #         "group": "design",
-    #         "label": "Fixed when scrolling",
-    #         "hint": "The menu will stay fixed to the top when scrolling down the page.",
-    #         "type": "boolean",
-    #         "default: "false"
+    #   "max_item_levels" => 2,
+    #   "supports_open_new_tab" => "true",
+    #   "attributes" => {
+    #      "text_color" => {
+    #        "type" => "color"
+    #      },
+    #      "background_color" => {
+    #        "type" => "color"
     #      }
-    #   }
+    #   },
+    #   "layout" => [
+    #     {
+    #       "type" => "tab",
+    #       "label" => "Content",
+    #       "elements" => [
+    #         "text_color",
+    #         "background_color"
+    #       ]
+    #     }
+    #   ]
     # }
-    #
     class FooterSchema < MenuSchema; end
   end
 end
