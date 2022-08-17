@@ -57,6 +57,7 @@ module Canvas
           ensure_no_unrecognized_keys
           ensure_no_duplicate_keys
           ensure_accordion_toggles_are_valid
+          ensure_unique_tabs
         end
 
         @errors.empty?
@@ -65,6 +66,21 @@ module Canvas
       private
 
       attr_reader :schema
+
+      def ensure_unique_tabs
+        tabs = fetch_elements_of_type("tab")
+        duplicates =
+          tabs
+          .map { |item| [item[0]["label"], item[1]] }
+          .group_by { |(key, _)| key }
+          .filter { |key, usage| usage.size > 1 }
+
+        unless duplicates.empty?
+          duplicates.each do |tab, usage|
+            @errors << "Duplicated tab label `#{tab}` found. Location: #{usage.map { |(_, location)| location }.join(", ")}"
+          end
+        end
+      end
 
       def ensure_no_duplicate_keys
         attributes = fetch_all_attribute_names

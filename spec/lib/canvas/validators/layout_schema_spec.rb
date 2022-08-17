@@ -99,6 +99,41 @@ describe Canvas::Validator::LayoutSchema do
       end
     end
 
+    describe "when multiple tabs have the same label" do
+      let(:schema) do
+        {
+          **attributes,
+          "layout" => [
+            {
+              "label" => "Design",
+              "type" => "tab",
+              "elements" => ["description"]
+            },
+            {
+              "label" => "Content",
+              "type" => "tab",
+              "elements" => ["logo_alt"]
+            },
+            {
+              "label" => "Design",
+              "type" => "tab",
+              "elements" => ["show_title"]
+            }
+          ]
+        }
+      end
+
+      it "returns false" do
+        expect(validator.validate).to be_falsey
+      end
+
+      it "contains errors" do
+        validator.validate
+
+        expect(validator.errors).to include(match("Duplicated tab label `Design` found. Location: layout/0, layout/2"))
+      end
+    end
+
     describe "when first level element hasn't children" do
       let(:schema) do
         {
