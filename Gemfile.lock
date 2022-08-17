@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    easol-canvas (2.0.0)
+    easol-canvas (2.1.0)
       cli-ui (~> 1.5)
       json-schema (~> 3)
       liquid (~> 5.3)
@@ -21,7 +21,7 @@ GEM
     ffi (1.15.5)
     json-schema (3.0.0)
       addressable (>= 2.8)
-    liquid (5.3.0)
+    liquid (5.4.0)
     method_source (1.0.0)
     nokogiri (1.13.8-arm64-darwin)
       racc (~> 1.4)
