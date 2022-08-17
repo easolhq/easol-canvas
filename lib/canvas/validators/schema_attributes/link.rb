@@ -6,9 +6,9 @@ module Canvas
       # :documented:
       # Attribute validations specific to link-type variables.
       class Link < Base
-        ALLOWED_DEFAULT_KEYS = %w[url page post product].freeze
+        ALLOWED_DEFAULT_KEYS = %w[url page post experience accommodation].freeze
         INVALID_DEFAULT_ERROR = "\"default\" for link-type variables must include "\
-                                "a single url, page, post or product value"
+                                "a single url, page, post, experience or accommodation value"
 
         def validate
           super &&
