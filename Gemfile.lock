@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    easol-canvas (2.1.0)
+    easol-canvas (2.2.0)
       cli-ui (~> 1.5)
       json-schema (~> 3)
       liquid (~> 5.3)

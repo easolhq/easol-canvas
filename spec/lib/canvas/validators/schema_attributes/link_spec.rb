@@ -31,17 +31,22 @@ describe Canvas::Validator::SchemaAttribute::Link do
         it { expect(validator.validate).to eq(true) }
       end
 
-      context "default is product" do
-        let(:default) { { "product" => "sgid_param" } }
+      context "default is an experience" do
+        let(:default) { { "experience" => "sgid_param" } }
+        it { expect(validator.validate).to eq(true) }
+      end
+
+      context "default is an accommodation" do
+        let(:default) { { "accommodation" => "sgid_param" } }
         it { expect(validator.validate).to eq(true) }
       end
 
       context "when multiple defaults are provided" do
-        let(:default) { { "product" => "sgid_param", "url" => "easol.test" } }
+        let(:default) { { "experience" => "sgid_param", "url" => "easol.test" } }
         it {
           expect(validator.validate).to eq(false)
           expect(validator.errors).to include(
-            "\"default\" for link-type variables must include a single url, page, post or product value"
+            "\"default\" for link-type variables must include a single url, page, post, experience or accommodation value"
           )
         }
       end
@@ -51,7 +56,7 @@ describe Canvas::Validator::SchemaAttribute::Link do
         it {
           expect(validator.validate).to eq(false)
           expect(validator.errors).to include(
-            "\"default\" for link-type variables must include a single url, page, post or product value"
+            "\"default\" for link-type variables must include a single url, page, post, experience or accommodation value"
           )
         }
       end
@@ -61,7 +66,7 @@ describe Canvas::Validator::SchemaAttribute::Link do
         it {
           expect(validator.validate).to eq(false)
           expect(validator.errors).to include(
-            "\"default\" for link-type variables must include a single url, page, post or product value"
+            "\"default\" for link-type variables must include a single url, page, post, experience or accommodation value"
           )
         }
       end
