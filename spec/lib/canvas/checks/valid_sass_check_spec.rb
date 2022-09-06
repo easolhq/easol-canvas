@@ -15,16 +15,15 @@ describe Canvas::ValidJsonCheck do
     it "adds an offense when a file contains invalid Sass" do
       copy_example_directory("alchemist")
       subject.run
-      message = <<~MESSAGE.chop
-        Invalid Sass: assets/index.css - \n
-        Error: Undefined variable: "$gray-100".
-                on line 1:13 of stdin
-        >> h1 { color: $gray-100 }
-      MESSAGE
 
       expect(subject.offenses).to match_array(
         [
-          have_attributes(message: include(message.squeeze("\n")))
+          have_attributes(
+            message: include("Invalid Sass: assets/index.css") &
+              include("Error: Undefined variable") &
+              include("1:13") &
+              include("h1 { color: $gray-100 }")
+          )
         ]
       )
     end
