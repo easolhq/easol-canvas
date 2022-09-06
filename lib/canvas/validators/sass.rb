@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "sassc"
+require "canvas/dartsass"
 
 module Canvas
   module Validator
@@ -15,9 +15,9 @@ module Canvas
       end
 
       def validate
-        SassC::Engine.new(@file, style: :compressed).render
+        DartSass.new(@file, style: :compressed).render
         true
-      rescue SassC::SyntaxError => e
+      rescue DartSass::Error => e
         @errors = [e.message]
         false
       end
