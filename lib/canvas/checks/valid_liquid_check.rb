@@ -38,6 +38,7 @@ module Canvas
       register_tag("easol_badge", ::Liquid::Tag)
       register_tag("accommodation_availability", ::Liquid::Block)
       register_tag("cache", ::Liquid::Block)
+      register_tag("currency_switcher", ::Liquid::Tag)
     end
   end
 end
