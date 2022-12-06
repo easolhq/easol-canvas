@@ -15,8 +15,8 @@ module Canvas
             Canvas::Client.new.post(
               "/test_site_sync",
               body: {
-                path: path,
-                contents: File.read(path)
+                file_path: path,
+                file_contents: File.read(path)
               }
             )
           }
