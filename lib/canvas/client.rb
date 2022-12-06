@@ -9,6 +9,7 @@ module Canvas
 
     def initialize
       @endpoint_base = ENDPOINT_BASE
+      @api_key = Canvas::GlobalConfig.get(:api_key)
     end
 
     def post(path, **opts)
@@ -33,7 +34,8 @@ module Canvas
     def request_headers
       {
         "Accept" => "application/json",
-        "Content-Type" => "application/json"
+        "Content-Type" => "application/json",
+        "Authorization" => "Bearer #{@api_key}"
       }
     end
 

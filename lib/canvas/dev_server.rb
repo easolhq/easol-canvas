@@ -8,8 +8,10 @@ module Canvas
     end
 
     def run
+      check_api_key_present
       CLI::UI::StdoutRouter.enable
       @watcher.add_observer(self, :sync_files)
+
 
       CLI::UI::Frame.open("Running Dev Server") do
         start
@@ -18,6 +20,14 @@ module Canvas
         stop
       end
     end
+
+    def sync_files(modified, added, removed)
+      Canvas::DevServer::Syncer.sync_file(modified[0])
+      Canvas::DevServer::Syncer.sync_file(added[0])
+      Canvas::DevServer::Syncer.sync_file(removed[0])
+    end
+    
+    private
 
     def start
       @watcher.start
@@ -30,10 +40,12 @@ module Canvas
       @watcher.stop
     end
 
-    def sync_files(modified, added, removed)
-      Canvas::DevServer::Syncer.sync_file(modified[0])
-      Canvas::DevServer::Syncer.sync_file(added[0])
-      Canvas::DevServer::Syncer.sync_file(removed[0])
+    def check_api_key_present
+      api_key = Canvas::GlobalConfig.get(:api_key)
+      unless api_key
+        puts "No api key set, please use canvas login to set your api key"
+        exit 1
+      end
     end
   end
 end
