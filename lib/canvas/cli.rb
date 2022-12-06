@@ -22,5 +22,10 @@ module Canvas
     def dev
       Canvas::DevServer.new.run
     end
+
+    desc "login", "Authorise with your Easol Account"
+    def login
+      Canvas::Login.new.run
+    end
   end
 end

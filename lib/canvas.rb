@@ -9,6 +9,7 @@ module Canvas
   autoload :Offense, "canvas/offense"
   autoload :Version, "canvas/version"
   autoload :DevServer, "canvas/dev_server"
+  autoload :Login, "canvas/login"
 end
 
 # We need to ensure Canvas::Validator::SchemaAttribute::Base is required first
