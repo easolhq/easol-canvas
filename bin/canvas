@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-$LOAD_PATH.push './lib'
+$LOAD_PATH.push File.expand_path(File.join(File.dirname(__FILE__), "../lib"))
 require_relative "../lib/canvas"
 
 Canvas::Cli.start(ARGV)

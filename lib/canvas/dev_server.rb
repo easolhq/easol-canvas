@@ -1,11 +1,9 @@
 require_relative "dev_server/watcher"
-require_relative "dev_server/watchlist"
 
 module Canvas
   class DevServer
     def initialize
-      @watchlist = WatchList.new
-      @watcher = Watcher.new(@watchlist)
+      @watcher = Watcher.new
     end
 
     def run
@@ -30,7 +28,9 @@ module Canvas
     end
 
     def sync_files(modified, added, removed)
-      Canvas::Config.set(synced: true)
+      puts "Modified #{modified}"
+      puts "Added #{added}"
+      puts "Removed #{removed}"
     end
   end
 end

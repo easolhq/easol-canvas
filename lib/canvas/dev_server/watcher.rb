@@ -6,12 +6,8 @@ module Canvas
     class Watcher
       include Observable
 
-      def initialize(watchlist)
-        return unless watchlist.files.any?
-
-        files = watchlist.files.join("$|").gsub!(".", "\.") + "$"
-
-        @listener = Listen.to(Dir.getwd, only: /#{files}/) do |modified, added, removed|
+      def initialize
+        @listener = Listen.to(Dir.getwd) do |modified, added, removed|
           changed
           notify_observers(modified, added, removed)
         end
