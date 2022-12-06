@@ -4,7 +4,7 @@ module Canvas
   class DevServer
     class Syncer
       class << self
-        def sync_file(path)
+        def sync_file(path, subdomain, site_id)
           return if path.nil?
           relative_path = Pathname.new(path).relative_path_from(Dir.getwd)
           CLI::UI::Spinner.spin("Syncing #{relative_path}") {
@@ -14,9 +14,11 @@ module Canvas
 
             Canvas::Client.new.post(
               "/test_site_sync",
+              subdomain:,
               body: {
-                file_path: path,
-                file_contents: File.read(path)
+                file_path: relative_path.to_s,
+                file_content: File.read(path),
+                site_id:
               }
             )
           }

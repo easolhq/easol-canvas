@@ -2,7 +2,7 @@ require "net/http"
 
 module Canvas
   class Client
-    ENDPOINT_BASE = "http://easol.test"
+    ENDPOINT_BASE = "http://%s.easol.test"
     class RequestError < StandardError; end
     class ServerError < StandardError; end
     class UnhandledResponseError < StandardError; end
@@ -13,7 +13,7 @@ module Canvas
     end
 
     def post(path, **opts)
-      uri = URI.parse(endpoint_base + path)
+      uri = URI.parse(endpoint_base % opts.fetch(:subdomain) + path)
       http = prepare_http(uri)
 
       handle_response http.post(

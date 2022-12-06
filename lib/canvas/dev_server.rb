@@ -1,10 +1,13 @@
 require_relative "dev_server/watcher"
 require_relative "dev_server/syncer"
+require_relative "local_config"
 
 module Canvas
   class DevServer
     def initialize
       @watcher = Watcher.new
+      @subdomain = Canvas::LocalConfig.get(:attached_company_subdomain)
+      @site_id = Canvas::LocalConfig.get(:site_id)
     end
 
     def run
@@ -22,9 +25,9 @@ module Canvas
     end
 
     def sync_files(modified, added, removed)
-      Canvas::DevServer::Syncer.sync_file(modified[0])
-      Canvas::DevServer::Syncer.sync_file(added[0])
-      Canvas::DevServer::Syncer.sync_file(removed[0])
+      Canvas::DevServer::Syncer.sync_file(modified[0], @subdomain, @site_id)
+      Canvas::DevServer::Syncer.sync_file(added[0], @subdomain, @site_id)
+      Canvas::DevServer::Syncer.sync_file(removed[0], @subdomain, @site_id)
     end
     
     private
