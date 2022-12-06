@@ -13,7 +13,7 @@ module Canvas
             raise "Failed Linting #{relative_path}" if error_checks&.any?
 
             Canvas::Client.new.post(
-              "/test_site_sync",
+              "/canvas_api/theme_files",
               subdomain:,
               body: {
                 file_path: relative_path.to_s,
