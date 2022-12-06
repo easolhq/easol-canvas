@@ -1,4 +1,5 @@
 require_relative "dev_server/watcher"
+require_relative "dev_server/syncer"
 
 module Canvas
   class DevServer
@@ -7,13 +8,15 @@ module Canvas
     end
 
     def run
+      CLI::UI::StdoutRouter.enable
       @watcher.add_observer(self, :sync_files)
 
-      puts "Listening for changes"
-      start
+      CLI::UI::Frame.open("Running Dev Server") do
+        start
 
-      puts "Finishing"
-      stop
+        puts "Finishing"
+        stop
+      end
     end
 
     def start
@@ -28,9 +31,9 @@ module Canvas
     end
 
     def sync_files(modified, added, removed)
-      puts "Modified #{modified}"
-      puts "Added #{added}"
-      puts "Removed #{removed}"
+      Canvas::DevServer::Syncer.sync_file(modified[0])
+      Canvas::DevServer::Syncer.sync_file(added[0])
+      Canvas::DevServer::Syncer.sync_file(removed[0])
     end
   end
 end
