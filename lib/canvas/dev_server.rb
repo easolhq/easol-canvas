@@ -17,6 +17,7 @@ module Canvas
 
 
       CLI::UI::Frame.open("Running Dev Server") do
+        `open https://#{@subdomain}.easol.test/admin/site_builder/sites/#{@site_id}/pages`
         start
 
         puts "Finishing"
