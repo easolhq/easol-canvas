@@ -11,7 +11,7 @@ module Canvas
       @offenses = []
     end
 
-    def run
+    def run(scoped_files)
       raise NotImplementedError
     end
 

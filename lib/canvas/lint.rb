@@ -5,13 +5,13 @@ require "cli/ui"
 module Canvas
   #:documented:
   class Lint
-    def run
+    def run(scoped_files)
       output_context = CLI::UI::SpinGroup.new(auto_debrief: false)
 
       @checks = Checks.registered.map(&:new)
 
       @checks.each do |check|
-        run_check(check, output_context)
+        run_check(check, output_context, scoped_files)
       end
 
       output_context.wait
@@ -24,9 +24,9 @@ module Canvas
 
     private
 
-    def run_check(check, output_context)
+    def run_check(check, output_context, scoped_files)
       output_context.add(check.class.name) do
-        check.run
+        check.run(scoped_files)
         raise if check.offenses.any?
       end
     end

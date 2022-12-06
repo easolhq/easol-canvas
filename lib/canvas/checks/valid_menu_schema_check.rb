@@ -22,7 +22,8 @@ module Canvas
   # <p>My menu HTML</p>
   #
   class ValidMenuSchemaCheck < Check
-    def run
+    def run(scoped_files)
+      return unless scoped_files.include? menu_filename
       file = File.read(menu_filename)
       front_matter = extract_front_matter(file)
       validate_format(front_matter) &&

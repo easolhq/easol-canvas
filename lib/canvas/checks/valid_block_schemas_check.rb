@@ -19,9 +19,9 @@ module Canvas
   # <p>My block HTML</p>
   #
   class ValidBlockSchemasCheck < Check
-    def run
+    def run(scoped_files)
       custom_types = Canvas::FetchCustomTypes.call
-      block_files.each do |filename|
+      block_files(scoped_files).each do |filename|
         front_matter = extract_front_matter(filename)
         next unless front_matter
 
@@ -32,8 +32,13 @@ module Canvas
 
     private
 
-    def block_files
-      Dir.glob("blocks/**/*.{html,liquid}")
+    def block_files(scoped_files)
+      all_files = Dir.glob("blocks/**/*.{html,liquid}")
+      if scoped_files.any?
+        all_files & scoped_files
+      else
+        all_files
+      end
     end
 
     def validate_format(filename, front_matter)

@@ -12,7 +12,7 @@ module Canvas
       "assets/index.css"
     ].freeze
 
-    def run
+    def run(scoped_files)
       REQUIRED_FILES.each do |filename|
         file_paths = Dir.glob(filename)
 

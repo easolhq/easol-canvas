@@ -7,9 +7,9 @@ module Canvas
   # :documented:
   class Cli < Thor
     desc "lint", "Prints a hello world message"
-    def lint
+    def lint(*files)
       CLI::UI::StdoutRouter.enable
-      Canvas::Lint.new.run
+      Canvas::Lint.new.run(files)
     end
 
     map %w[--version -v] => :__print_version
