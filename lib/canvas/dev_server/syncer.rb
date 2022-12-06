@@ -8,6 +8,10 @@ module Canvas
           return if path.nil?
           relative_path = Pathname.new(path).relative_path_from(Dir.getwd)
           CLI::UI::Spinner.spin("Syncing #{relative_path}") {
+            error_checks = Canvas::Lint.new.run([relative_path.to_s], nil)
+
+            raise "Failed Linting #{relative_path}" if error_checks&.any?
+
             Canvas::Client.new.post(
               "/test_site_sync",
               body: {
