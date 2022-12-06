@@ -50,6 +50,7 @@ module Canvas
       else
         raise UnhandledResponseError.new(response.body)
       end
+    rescue JSON::ParserError
     end
   end
 end
