@@ -12,6 +12,16 @@ module Canvas
       @api_key = Canvas::GlobalConfig.get(:api_key)
     end
 
+    def get(path, **opts)
+      uri = URI.parse(endpoint_base % opts.fetch(:subdomain) + path)
+      http = prepare_http(uri)
+
+      handle_response http.get(
+        uri,
+        request_headers.merge(opts.fetch(:headers, {}))
+      )
+    end
+
     def post(path, **opts)
       uri = URI.parse(endpoint_base % opts.fetch(:subdomain) + path)
       http = prepare_http(uri)
