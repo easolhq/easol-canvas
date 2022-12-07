@@ -15,8 +15,9 @@ module Canvas
       CLI::UI::StdoutRouter.enable
       @watcher.add_observer(self, :sync_files)
 
-
       CLI::UI::Frame.open("Running Dev Server") do
+        create_dev_site
+
         `open https://#{@subdomain}.easol.test/admin/site_builder/sites/#{@site_id}/pages`
         start_watcher
 
@@ -42,6 +43,28 @@ module Canvas
 
     def stop_watcher
       @watcher.stop
+    end
+
+    def create_dev_site
+      CLI::UI::Spinner.spin("Generating temporary dev site") {
+        response = Canvas::Client.new.post("/canvas_api/dev_sites", subdomain: @subdomain)
+        status = "pending"
+
+        until status != "pending"
+          job_response = Canvas::Client.new.get(
+            "/canvas_api/dev_sites?site_duplication_job_id=#{response["site_duplication_job_id"]}",
+            subdomain: @subdomain
+          )
+          status = job_response["status"]
+          sleep(1)
+        end
+
+        if job_response["site_id"]
+          Canvas::LocalConfig.set(site_id: job_response["site_id"])
+        else
+          raise "Failed to create dev site."
+        end
+      }
     end
 
     def check_api_key_present
