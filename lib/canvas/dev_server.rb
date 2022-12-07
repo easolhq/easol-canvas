@@ -16,7 +16,7 @@ module Canvas
       @watcher.add_observer(self, :sync_files)
 
       CLI::UI::Frame.open("Running Dev Server") do
-        create_dev_site
+        create_dev_site or raise
 
         `open https://#{@subdomain}.easol.test/admin/site_builder/sites/#{@site_id}/pages`
         start_watcher
