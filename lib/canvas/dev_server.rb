@@ -16,6 +16,7 @@ module Canvas
 
       CLI::UI::Frame.open("Running Dev Server") do
         create_dev_site or raise
+        sync_local_changes or raise
         open_site_in_browser
         start_watcher
         destroy_dev_site
@@ -85,6 +86,15 @@ module Canvas
             site_id: site_id
           }
         )
+      }
+    end
+
+    def sync_local_changes
+      CLI::UI::Spinner.spin("Syncing local file changes") {
+        changed_files = `git fetch && git diff origin/$(git remote show origin | sed -n '/HEAD branch/s/.*: //p') --name-only`.split
+        changed_files.each do |path|
+          Syncer.sync_file(path, @subdomain, @site_id)
+        end
       }
     end
 
