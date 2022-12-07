@@ -16,11 +16,8 @@ module Canvas
 
       CLI::UI::Frame.open("Running Dev Server") do
         create_dev_site or raise
-
-        `open https://#{@subdomain}.easol.test/admin/site_builder/sites/#{@site_id}/pages`
-
+        open_site_in_browser
         start_watcher
-
         destroy_dev_site
 
         puts "Finishing"
@@ -45,6 +42,10 @@ module Canvas
 
     def stop_watcher
       @watcher.stop
+    end
+
+    def open_site_in_browser
+      `open https://#{@subdomain}.easol.test/admin/site_builder/sites/#{@site_id}/pages`
     end
 
     def create_dev_site
