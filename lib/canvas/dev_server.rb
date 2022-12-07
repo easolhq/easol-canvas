@@ -18,10 +18,10 @@ module Canvas
 
       CLI::UI::Frame.open("Running Dev Server") do
         `open https://#{@subdomain}.easol.test/admin/site_builder/sites/#{@site_id}/pages`
-        start
+        start_watcher
 
         puts "Finishing"
-        stop
+        stop_watcher
       end
     end
 
@@ -30,17 +30,17 @@ module Canvas
       Canvas::DevServer::Syncer.sync_file(added[0], @subdomain, @site_id)
       Canvas::DevServer::Syncer.sync_file(removed[0], @subdomain, @site_id)
     end
-    
+
     private
 
-    def start
+    def start_watcher
       @watcher.start
 
       sleep
     rescue Interrupt
     end
 
-    def stop
+    def stop_watcher
       @watcher.stop
     end
 
