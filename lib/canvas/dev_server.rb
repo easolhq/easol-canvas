@@ -21,6 +21,8 @@ module Canvas
 
         start_watcher
 
+        destroy_dev_site
+
         puts "Finishing"
         stop_watcher
       end
@@ -65,6 +67,21 @@ module Canvas
         else
           raise "Failed to create dev site."
         end
+      }
+    end
+
+    def destroy_dev_site
+      CLI::UI::Spinner.spin("Deleting temporary dev site") {
+        @site_id = nil
+        site_id = Canvas::LocalConfig.get(:site_id)
+        Canvas::LocalConfig.delete(:site_id)
+        Canvas::Client.new.delete(
+          "/canvas_api/dev_sites",
+          subdomain: @subdomain,
+          body: {
+            site_id: site_id
+          }
+        )
       }
     end
 
