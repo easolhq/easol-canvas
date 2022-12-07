@@ -7,7 +7,6 @@ module Canvas
     def initialize
       @watcher = Watcher.new
       @subdomain = Canvas::LocalConfig.get(:attached_company_subdomain)
-      @site_id = Canvas::LocalConfig.get(:site_id)
     end
 
     def run
@@ -19,6 +18,7 @@ module Canvas
         create_dev_site or raise
 
         `open https://#{@subdomain}.easol.test/admin/site_builder/sites/#{@site_id}/pages`
+
         start_watcher
 
         puts "Finishing"
@@ -59,8 +59,9 @@ module Canvas
           sleep(1)
         end
 
-        if job_response["site_id"]
-          Canvas::LocalConfig.set(site_id: job_response["site_id"])
+        @site_id = job_response["site_id"]
+        if @site_id
+          Canvas::LocalConfig.set(site_id: @site_id)
         else
           raise "Failed to create dev site."
         end
