@@ -34,4 +34,16 @@ describe Canvas::LocalConfig do
       expect(Canvas::LocalConfig.get(:bar)).to be_nil
     end
   end
+
+  describe "#delete" do
+    before do
+      Canvas::LocalConfig.set(foo: "bar")
+    end
+
+    it "removes the value from the config" do
+      expect(Canvas::LocalConfig.get(:foo)).to eq "bar"
+      Canvas::LocalConfig.delete(:foo)
+      expect(Canvas::LocalConfig.get(:foo)).to be_nil
+    end
+  end
 end
