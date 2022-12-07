@@ -4,6 +4,7 @@ module Canvas
   autoload :Checks, "canvas/checks"
   autoload :Cli, "canvas/cli"
   autoload :GlobalConfig, "canvas/global_config"
+  autoload :LocalConfig, "canvas/local_config"
   autoload :Constants, "canvas/constants"
   autoload :Lint, "canvas/lint"
   autoload :Offense, "canvas/offense"
