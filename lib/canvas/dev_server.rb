@@ -45,7 +45,9 @@ module Canvas
     end
 
     def open_site_in_browser
-      `open https://#{@subdomain}.easol.test/admin/site_builder/sites/#{@site_id}/pages`
+      url = "https://#{@subdomain}.easol.test/admin/site_builder/sites/#{@site_id}/pages"
+      puts CLI::UI.fmt "Opening {{green:#{url}}}"
+      `open #{url}`
     end
 
     def create_dev_site
