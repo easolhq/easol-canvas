@@ -33,6 +33,19 @@ module Canvas
       )
     end
 
+    def delete(path, **opts)
+      uri = URI.parse(endpoint_base % opts.fetch(:subdomain) + path)
+      http = prepare_http(uri)
+
+      request = Net::HTTP::Delete.new(
+        uri.path,
+        request_headers.merge(opts.fetch(:headers, {}))
+      )
+      request.body = opts.fetch(:body, {}).to_json
+
+      handle_response http.request(request)
+    end
+
     private
 
     attr_reader :debug_mode, :endpoint_base
