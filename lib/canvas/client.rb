@@ -12,6 +12,16 @@ module Canvas
       @api_key = Canvas::GlobalConfig.get(:api_key)
     end
 
+    def get(path, **opts)
+      uri = URI.parse(endpoint_base % opts.fetch(:subdomain) + path)
+      http = prepare_http(uri)
+
+      handle_response http.get(
+        uri,
+        request_headers.merge(opts.fetch(:headers, {}))
+      )
+    end
+
     def post(path, **opts)
       uri = URI.parse(endpoint_base % opts.fetch(:subdomain) + path)
       http = prepare_http(uri)
@@ -21,6 +31,19 @@ module Canvas
         opts.fetch(:body, {}).to_json,
         request_headers.merge(opts.fetch(:headers, {}))
       )
+    end
+
+    def delete(path, **opts)
+      uri = URI.parse(endpoint_base % opts.fetch(:subdomain) + path)
+      http = prepare_http(uri)
+
+      request = Net::HTTP::Delete.new(
+        uri.path,
+        request_headers.merge(opts.fetch(:headers, {}))
+      )
+      request.body = opts.fetch(:body, {}).to_json
+
+      handle_response http.request(request)
     end
 
     private
