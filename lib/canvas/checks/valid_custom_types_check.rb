@@ -5,8 +5,8 @@ module Canvas
   # This check will validate the JSON objects that represent the
   # custom types that are defined in the /types directory.
   class ValidCustomTypesCheck < Check
-    def run
-      custom_type_files.each do |filename|
+    def run(scoped_files)
+      custom_type_files(scoped_files).each do |filename|
         schema = extract_json(filename)
         validator = Validator::CustomType.new(schema: schema)
 
@@ -22,8 +22,13 @@ module Canvas
 
     private
 
-    def custom_type_files
-      Dir.glob("types/*.json")
+    def custom_type_files(scoped_files)
+      all_files = Dir.glob("types/*.json")
+      if scoped_files.any?
+        all_files & scoped_files
+      else
+        all_files
+      end
     end
 
     def extract_json(filename)

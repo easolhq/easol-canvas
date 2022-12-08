@@ -24,4 +24,5 @@ Gem::Specification.new do |s|
   s.add_dependency "liquid", "~> 5.3"
   s.add_dependency "dartsass-rails", "~> 0.4.0"
   s.add_dependency "json-schema", "~> 3"
+  s.add_dependency "listen", "~> 3"
 end

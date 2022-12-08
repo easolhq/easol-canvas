@@ -3,10 +3,10 @@
 module Canvas
   # :documented:
   class ValidLiquidCheck < Check
-    def run
+    def run(scoped_files)
       register_tags!
 
-      liquid_files.each do |filename|
+      liquid_files(scoped_files).each do |filename|
         file = File.read(filename)
         validator = Validator::Liquid.new(file)
 
@@ -22,8 +22,13 @@ module Canvas
 
     private
 
-    def liquid_files
-      Dir.glob("**/*.{html,liquid}")
+    def liquid_files(scoped_files)
+      all_files = Dir.glob("**/*.{html,liquid}")
+      if scoped_files.any?
+        all_files & scoped_files
+      else
+        all_files
+      end
     end
 
     def register_tag(name, klass)

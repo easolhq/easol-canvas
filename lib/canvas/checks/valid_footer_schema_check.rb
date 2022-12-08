@@ -22,7 +22,8 @@ module Canvas
   # <p>My footer HTML</p>
   #
   class ValidFooterSchemaCheck < Check
-    def run
+    def run(scoped_files)
+      return unless scoped_files.include? footer_filename
       file = File.read(footer_filename)
       front_matter = extract_front_matter(file)
       validate_format(front_matter) &&
