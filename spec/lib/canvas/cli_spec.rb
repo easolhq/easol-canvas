@@ -9,4 +9,11 @@ describe Canvas::Cli do
       subject.lint
     end
   end
+
+  describe "__print_version" do
+    it "prints the gem version" do
+      stdout, _err = capture_io { subject.__print_version }
+      expect(stdout).to eq(Canvas::VERSION + "\n")
+    end
+  end
 end

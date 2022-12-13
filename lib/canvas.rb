@@ -7,7 +7,7 @@ module Canvas
   autoload :Constants, "canvas/constants"
   autoload :Lint, "canvas/lint"
   autoload :Offense, "canvas/offense"
-  autoload :Version, "canvas/version"
+  autoload :VERSION, "canvas/version"
 end
 
 # We need to ensure Canvas::Validator::SchemaAttribute::Base is required first
