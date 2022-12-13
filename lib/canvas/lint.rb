@@ -6,18 +6,18 @@ module Canvas
   #:documented:
   class Lint
     def run
-      output_context = CLI::UI::SpinGroup.new(auto_debrief: false)
+      spin_group = CLI::UI::SpinGroup.new(auto_debrief: false)
 
-      @checks = Checks.registered.map(&:new)
-      @errored_checks = {}
+      @failed_checks = {}
 
-      @checks.each do |check|
-        run_check(check, output_context)
+      checks = Checks.registered.map(&:new)
+      checks.each do |check|
+        run_check(check, spin_group)
       end
 
-      output_context.wait
+      spin_group.wait
 
-      if @errored_checks.any? || @checks.any?(&:failed?)
+      if @failed_checks.any?
         puts debrief_message
         exit 1
       end
@@ -25,32 +25,39 @@ module Canvas
 
     private
 
-    def run_check(check, output_context)
-      output_context.add(check.class.name) do
-        begin
-          check.run
-        rescue => ex
-          @errored_checks[check.class.name] = ex.message + ex.backtrace.join("\n")
-          raise ex
-        end
+    def run_check(check, spin_group)
+      offenses = run_check_and_return_offenses(check)
 
-        raise if check.offenses.any?
+      output_check(
+        spin_group,
+        name: check.class.name,
+        success: offenses.empty?
+      )
+
+      if offenses.any?
+        @failed_checks[check.class.name] = offenses
       end
+    end
+
+    def output_check(spin_group, name:, success:)
+      spin_group.add(name) do
+        raise if !success
+      end
+    end
+
+    def run_check_and_return_offenses(check)
+      check.run
+      check.offenses.map(&:message)
+    rescue => ex
+      [ex.message + "\n" + ex.backtrace.join("\n")]
     end
 
     def debrief_message
       CLI::UI::Frame.open("Failures", color: :red) do
-        @errored_checks.each do |check_name, error_message|
+        @failed_checks.map do |check_name, messages|
           CLI::UI::Frame.open(check_name, color: :red) do
-            puts CLI::UI.fmt "{{x}} #{error_message}"
-          end
-        end
-
-        failed_checks = @checks.filter(&:failed?)
-        failed_checks.map do |check|
-          CLI::UI::Frame.open(check.class.name, color: :red) do
-            output = check.offenses.map { |offense|
-              CLI::UI.fmt "{{x}} #{offense.message}"
+            output = messages.map { |message|
+              CLI::UI.fmt "{{x}} #{message}"
             }
             puts output.join("\n")
           end

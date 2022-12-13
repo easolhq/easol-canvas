@@ -6,7 +6,11 @@ describe Canvas::Lint do
   before do
     stub_const(
       "DummyCheck",
-      Class.new(Canvas::Check)
+      Class.new(Canvas::Check) do
+        def run
+          true
+        end
+      end
     )
 
     @registered_checks = Canvas::Checks.registered
