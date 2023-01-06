@@ -12,19 +12,19 @@ module Canvas
     ].freeze
 
     PRIMITIVE_TYPES = %w[
-      image
-      product
-      post
-      page
-      link
-      text
-      string
       boolean
-      number
       color
-      select
-      range
+      image
+      link
+      number
+      page
+      post
+      product
       radio
+      range
+      select
+      string
+      text
       variant
     ].freeze
   end
