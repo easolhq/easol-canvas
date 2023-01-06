@@ -12,20 +12,34 @@ module Canvas
     ].freeze
 
     PRIMITIVE_TYPES = %w[
-      image
-      product
-      post
-      page
-      link
-      text
-      string
       boolean
-      number
       color
-      select
-      range
+      image
+      link
+      number
+      page
+      post
+      product
       radio
+      range
+      select
+      string
+      text
       variant
     ].freeze
+
+    # These are types where the value is stored as a primitive type, e.g. string, integer.
+    # As opposed to values such as product IDs, color hashes, etc.
+    # This constant is currently used to determine whether it is safe to preserve
+    # a value when a variable changes type.
+    TYPES_WITH_PRIMITIVE_VALUE = %w[
+      boolean
+      number
+      radio
+      range
+      select
+      string
+      text
+    ]
   end
 end
