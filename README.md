@@ -61,6 +61,19 @@ bin/rspec
 
 ### How to test locally in a theme repo
 
+#### Direct call
+
+This approach is generally quicker than installing the gem (see below). Please use the built gem for final testing.
+
+Within a theme repo, call the executable of the gem directly, for example:
+
+```
+cd alchemist_theme
+../canvas/bin/canvas lint
+```
+
+#### Installing the gem
+
 1. Clone the [easolhq/canvas](https://github.com/easolhq/canvas) repo locally.
 2. Build the gem inside the canvas directory to create a `.gem` file.
 
