@@ -7,6 +7,7 @@ module Canvas
       # Attribute validations specific to product-type variables.
       class Product < Base
         ALLOWED_DEFAULT_VALUES = %w[random].freeze
+        ALLOWED_RESTRICTIONS = %w[experiences accommodations extras].freeze
 
         def validate
           super &&
@@ -43,10 +44,16 @@ module Canvas
 
           if attribute["only"].empty?
             @errors << %["only" cannot be empty]
-            false
-          else
-            true
+            return false
           end
+
+          unsupported_entries = attribute["only"] - ALLOWED_RESTRICTIONS
+          if unsupported_entries.any?
+            @errors << %["only" for product-type variables must be one of: #{ALLOWED_RESTRICTIONS.join(', ')}]
+            return false
+          end
+
+          true
         end
 
         def default_value_is_valid?(value)
