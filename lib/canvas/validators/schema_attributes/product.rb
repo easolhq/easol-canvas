@@ -10,7 +10,8 @@ module Canvas
 
         def validate
           super &&
-            ensure_default_values_are_valid
+            ensure_default_values_are_valid &&
+            ensure_only_values_are_valid
         end
 
         private
@@ -23,6 +24,10 @@ module Canvas
           end
         end
 
+        def optional_keys
+          super.merge("only" => Array)
+        end
+
         def ensure_default_values_are_valid
           return true unless attribute.key?("default")
 
@@ -30,6 +35,17 @@ module Canvas
             attribute["default"].all? { |value| default_value_is_valid?(value) }
           else
             default_value_is_valid?(attribute["default"])
+          end
+        end
+
+        def ensure_only_values_are_valid
+          return true unless attribute.key?("only")
+
+          if attribute["only"].empty?
+            @errors << %["only" cannot be empty]
+            false
+          else
+            true
           end
         end
 

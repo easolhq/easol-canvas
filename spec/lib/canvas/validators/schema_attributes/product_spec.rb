@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 describe Canvas::Validator::SchemaAttribute::Product do
-  subject(:validator) {
-    Canvas::Validator::SchemaAttribute::Product.new(attribute)
-  }
+  subject(:validator) { described_class.new(attribute) }
 
   describe "#validate" do
     describe "validating an optional 'default' key" do
@@ -23,6 +21,37 @@ describe Canvas::Validator::SchemaAttribute::Product do
           expect(validator.errors).to include(
             "\"default\" for product-type variables must be one of: random"
           )
+        end
+      end
+
+      context "when `only` is provided" do
+        it "is valid when using an array" do
+          validator = described_class.new({
+            "name" => "my_product",
+            "type" => "product",
+            "only" => ["Experience", "Product"],
+          })
+          expect(validator.validate).to eq(true)
+        end
+
+        it "is invalid when empty as it would exclude everything" do
+          validator = described_class.new({
+            "name" => "my_product",
+            "type" => "product",
+            "only" => [],
+          })
+          expect(validator.validate).to eq(false)
+          expect(validator.errors).to include(%["only" cannot be empty])
+        end
+
+        it "is invalid when not an array" do
+          validator = described_class.new({
+            "name" => "my_product",
+            "type" => "product",
+            "only" => "not an array",
+          })
+          expect(validator.validate).to eq(false)
+          expect(validator.errors).to include(%["only" is a String, expected Array])
         end
       end
 
