@@ -273,7 +273,7 @@ Style/BlockDelimiters:
   EnforcedStyle: semantic
   Exclude:
     - "spec/**/*.rb"
-  IgnoredMethods:
+  AllowedMethods:
     - attribute
     - html
     - json
