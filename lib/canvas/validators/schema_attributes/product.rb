@@ -59,8 +59,7 @@ module Canvas
         def default_value_is_valid?(value)
           value = value.downcase
           if !ALLOWED_DEFAULT_VALUES.include?(value)
-            @errors << "\"default\" for product-type variables must be "\
-                       "one of: #{ALLOWED_DEFAULT_VALUES.join(', ')}"
+            @errors << %["default" for product-type variables must be one of: #{ALLOWED_DEFAULT_VALUES.join(', ')}]
             false
           else
             true
