@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.description = <<~EOF
     Canvas is a command line tool to help with building themes for Easol.
     It provides tooling to check theme directories for errors and to make sure
-    they confirm with the Easol theme spec.
+    they conform with the Easol theme spec.
   EOF
   s.authors     = ["Kyle Byrne", "Ian Mooney"]
   s.email       = "developers@easol.com"
