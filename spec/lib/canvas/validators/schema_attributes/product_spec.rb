@@ -26,7 +26,7 @@ describe Canvas::Validator::SchemaAttribute::Product do
 
       context "when `only` is provided" do
         it "is valid when using an array" do
-          all_allowed_values = %w[experiences accommodations extras]
+          all_allowed_values = %w[experiences accommodations]
           validator = described_class.new({
             "name" => "my_product",
             "type" => "product",
@@ -52,7 +52,7 @@ describe Canvas::Validator::SchemaAttribute::Product do
             "only" => ["unsupported"],
           })
           expect(validator.validate).to eq(false)
-          expect(validator.errors).to include(%["only" for product-type variables must be one of: experiences, accommodations, extras])
+          expect(validator.errors).to include(%["only" for product-type variables must be one of: experiences, accommodations])
         end
 
         it "is invalid when not an array" do

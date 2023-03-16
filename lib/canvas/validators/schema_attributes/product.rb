@@ -7,7 +7,7 @@ module Canvas
       # Attribute validations specific to product-type variables.
       class Product < Base
         ALLOWED_DEFAULT_VALUES = %w[random].freeze
-        ALLOWED_RESTRICTIONS = %w[experiences accommodations extras].freeze
+        ALLOWED_RESTRICTIONS = %w[experiences accommodations].freeze
 
         def validate
           super &&
