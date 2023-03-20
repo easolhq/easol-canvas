@@ -35,15 +35,11 @@ describe Canvas::Validator::CustomType do
     end
 
     context "when schema has missing keys" do
-      let(:schema) {
-        {
-          "name" => "Card"
-        }
-      }
+      let(:schema) { {} }
 
       it "returns false with errors" do
         expect(validator.validate).to eq(false)
-        expect(validator.errors).to include("Missing required keys: key, attributes")
+        expect(validator.errors).to include("Missing required keys: key, name, attributes")
       end
     end
 
