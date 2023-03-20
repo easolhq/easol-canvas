@@ -9,7 +9,7 @@ describe Canvas::Validator::CustomType do
     context "when schema has required keys" do
       let(:schema) {
         {
-          "key" => "Card",
+          "key" => "card",
           "name" => "Card",
           "attributes" => [
             {
@@ -46,7 +46,7 @@ describe Canvas::Validator::CustomType do
     context "when schema has unrecognized keys" do
       let(:schema) {
         {
-          "key" => "Card",
+          "key" => "card",
           "name" => "Card",
           "attributes" => [
             {
@@ -105,6 +105,24 @@ describe Canvas::Validator::CustomType do
       end
     end
 
+    context "when the key is not lowercase" do
+      let(:schema) {
+        {
+          "key" => "notLowerCase",
+          "name" => "Not Lowercase",
+          "attributes" => [{
+            "name" => "irrelevant",
+            "type" => "string"
+          }]
+        }
+      }
+
+      it "is invalid" do
+        expect(validator.validate).to eq(false)
+        expect(validator.errors).to include(%("key" notLowerCase must be lowercase))
+      end
+    end
+
     context "when name is not a string" do
       let(:schema) {
         {
@@ -128,7 +146,7 @@ describe Canvas::Validator::CustomType do
     context "when schema has empty attributes" do
       let(:schema) {
         {
-          "key" => "Card",
+          "key" => "card",
           "name" => "Card",
           "attributes" => []
         }
@@ -143,7 +161,7 @@ describe Canvas::Validator::CustomType do
     context "when attributes contains values that are not hashes" do
       let(:schema) {
         {
-          "key" => "Card",
+          "key" => "card",
           "name" => "Card",
           "attributes" => [
             {
@@ -164,7 +182,7 @@ describe Canvas::Validator::CustomType do
     context "when there are duplicate attribute names" do
       let(:schema) {
         {
-          "key" => "Card",
+          "key" => "card",
           "name" => "Card",
           "attributes" => [
             {
@@ -188,7 +206,7 @@ describe Canvas::Validator::CustomType do
     context "when some attributes are not valid" do
       let(:schema) {
         {
-          "key" => "Card",
+          "key" => "card",
           "name" => "Card",
           "attributes" => [
             {
@@ -213,7 +231,7 @@ describe Canvas::Validator::CustomType do
     context "when first attribute is an array" do
       let(:schema) {
         {
-          "key" => "Card",
+          "key" => "card",
           "name" => "Card",
           "attributes" => [
             {
