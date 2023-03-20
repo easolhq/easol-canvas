@@ -85,26 +85,6 @@ describe Canvas::Validator::CustomType do
       end
     end
 
-    context "when name is not a string" do
-      let(:schema) {
-        {
-          "key" => "title",
-          "name" => false,
-          "attributes" => [
-            {
-              "name" => "title",
-              "type" => "string"
-            }
-          ]
-        }
-      }
-
-      it "returns false with errors" do
-        expect(validator.validate).to eq(false)
-        expect(validator.errors).to include("\"name\" must be a string")
-      end
-    end
-
     context "when key is a reserved word" do
       let(:schema) {
         {
@@ -122,6 +102,26 @@ describe Canvas::Validator::CustomType do
       it "returns false with errors" do
         expect(validator.validate).to eq(false)
         expect(validator.errors).to include("\"key\" can't be one of these reserved words: #{Canvas::Constants::PRIMITIVE_TYPES.join(', ')}")
+      end
+    end
+
+    context "when name is not a string" do
+      let(:schema) {
+        {
+          "key" => "title",
+          "name" => false,
+          "attributes" => [
+            {
+              "name" => "title",
+              "type" => "string"
+            }
+          ]
+        }
+      }
+
+      it "returns false with errors" do
+        expect(validator.validate).to eq(false)
+        expect(validator.errors).to include("\"name\" must be a string")
       end
     end
 
