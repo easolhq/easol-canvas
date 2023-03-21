@@ -5,6 +5,25 @@ describe Canvas::Validator::SchemaAttribute::Base do
     Canvas::Validator::SchemaAttribute::Base.new(attribute)
   }
 
+  describe "#permitted_keys" do
+    let(:attribute) { {} }
+    let(:common_attribute_keys) { %w[name type default array label hint group] }
+
+    it "exposes all common permitted keys" do
+      expect(validator.permitted_keys).to eq(common_attribute_keys)
+    end
+
+    it "exposes all extra optional and required keys for subclassed attributes" do
+      class NewAttribute < described_class
+        private
+        def required_keys = super.merge("requiredkey" => String)
+        def optional_keys = super.merge("optionalkey" => String)
+      end
+
+      expect(NewAttribute.new(attribute).permitted_keys).to match_array(common_attribute_keys + %w[requiredkey optionalkey])
+    end
+  end
+
   describe "#validate" do
     context "when attribute is valid" do
       let(:attribute) {

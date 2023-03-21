@@ -22,6 +22,10 @@ module Canvas
             ensure_keys_are_correct_types
         end
 
+        def permitted_keys
+          permitted_schema.keys
+        end
+
         private
 
         # The base keys required for this attribute to be valid and their
@@ -59,7 +63,7 @@ module Canvas
           }
         end
 
-        def all_permitted_keys
+        def permitted_schema
           required_keys.merge(optional_keys)
         end
 
@@ -72,7 +76,7 @@ module Canvas
         end
 
         def ensure_no_unrecognized_keys
-          unrecognized_keys = attribute.keys - all_permitted_keys.keys
+          unrecognized_keys = attribute.keys - permitted_schema.keys
           return true if unrecognized_keys.empty?
 
           @errors << "Unrecognized keys: #{unrecognized_keys.join(', ')}"
@@ -80,7 +84,7 @@ module Canvas
         end
 
         def ensure_keys_are_correct_types
-          all_permitted_keys.each do |key, expected|
+          permitted_schema.each do |key, expected|
             if expected.is_a?(Class)
               if attribute.key?(key) && !attribute[key].is_a?(expected)
                 actual = attribute[key].class.name

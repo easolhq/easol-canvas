@@ -13,6 +13,11 @@ describe Canvas::Validator::SchemaAttribute do
     end
   end
 
+  it "exposes all keys permitted to be in attribute schemas, in the order of validators" do
+    expect(described_class.permitted_keys)
+      .to eq(%w[name type default array label hint group only unit options min max step only_from])
+  end
+
   describe "#validate" do
     context "when the attribute has only required keys" do
       let(:attribute) {

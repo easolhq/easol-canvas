@@ -44,6 +44,12 @@ module Canvas
 
       attr_reader :attribute, :custom_types, :errors, :additional_reserved_names
 
+      class << self
+        def permitted_keys
+          VALIDATORS.flat_map { |_, validator| validator.new({}).permitted_keys }.uniq
+        end
+      end
+
       def initialize(attribute:, custom_types: [], additional_reserved_names: [])
         @attribute = attribute
         @custom_types = custom_types
