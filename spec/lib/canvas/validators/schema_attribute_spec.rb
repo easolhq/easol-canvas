@@ -450,8 +450,28 @@ describe Canvas::Validator::SchemaAttribute do
         }
       }
 
-      it "returns true" do
-        expect(validator.validate).to eq(true)
+      %w[card Card].each do |key|
+        %w[card Card].each do |type|
+          it "resolves type declaration #{type} when type key is #{key}" do
+            card_type["key"] = key
+            attribute["type"] = type
+            expect(validator.validate).to eq(true)
+          end
+        end
+      end
+
+      context "when the type is undefined" do
+        let(:attribute) {
+          {
+            "name" => "my_card",
+            "type" => "undefined_custom_type"
+          }
+        }
+
+        it "marks undefined type references as invalid" do
+          expect(validator.validate).to eq(false)
+          expect(validator.errors).to include(/"type" must be one of: .*, card/)
+        end
       end
 
       context "when array is true and custom type includes nonarray supported types" do

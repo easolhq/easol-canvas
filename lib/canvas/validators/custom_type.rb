@@ -38,6 +38,7 @@ module Canvas
           ensure_has_required_keys &&
           ensure_no_unrecognized_keys &&
           ensure_keys_are_correct_types &&
+          ensure_key_is_lowercase &&
           ensure_key_value_is_not_reserved &&
           ensure_no_duplicate_attributes &&
           ensure_attributes_are_valid &&
@@ -90,6 +91,13 @@ module Canvas
         end
 
         true
+      end
+
+      def ensure_key_is_lowercase
+        return true if schema["key"] == schema["key"].downcase
+
+        @errors << %("key" #{schema["key"]} must be lowercase)
+        false
       end
 
       # Ensuring the value for key doesn't clash with our primitive type keys.
