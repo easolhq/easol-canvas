@@ -137,3 +137,4 @@ cd alchemist_theme
     rake release[origin]
     ```
     This will tag the gem, push the tag to github, build the gem, and push it to [rubygems.org](http://rubygems.org). You will need to have a RubyGem account and be added to the project.
+5. On major version changes, update the version lock in the [canvas-linter-action](https://github.com/easolhq/canvas-linter-action/blob/main/entrypoint.sh) repo.
