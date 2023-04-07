@@ -26,6 +26,7 @@ module Canvas
       string
       text
       variant
+      date
     ].freeze
 
     # These are types where the value is stored as a primitive type, e.g. string, integer.
