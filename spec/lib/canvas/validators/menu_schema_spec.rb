@@ -153,7 +153,7 @@ describe Canvas::Validator::MenuSchema do
           expect(validator.errors).to include(
             "Attribute \"images\" is invalid - \"type\" must be one of: " \
             "boolean, color, image, link, number, page, post, product, " \
-            "radio, range, select, string, text, variant"
+            "radio, range, select, string, text, variant, package"
           )
         end
       end
