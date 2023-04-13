@@ -34,6 +34,7 @@ module Canvas
         "radio" => SchemaAttribute::Radio,
         "variant" => SchemaAttribute::Variant,
         "package" => SchemaAttribute::Package,
+        "date" => SchemaAttribute::Date,
       }.freeze
       RESERVED_NAMES = %w[
         page
