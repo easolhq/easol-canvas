@@ -9,6 +9,7 @@ end
 gemspec
 
 group :development, :test do
+  gem "gem-release"
   gem "pry"
   gem "rspec"
   gem "rubocop", require: false
