@@ -1,0 +1,31 @@
+name: release
+run-name: Publish and release new version
+on:
+  push:
+    tags:
+      - "v*.*.*"
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup git user
+        run: |
+          git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
+          git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.1"
+          bundler-cache: true
+
+      - run: bundle install
+      - run: bundle exec rspec
+      - run: bundle exec rubocop
+
+      - name: Build and publish gem
+        run: bundle exec rake release[remote]
+        env:
+          GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_AUTH_TOKEN}}"
