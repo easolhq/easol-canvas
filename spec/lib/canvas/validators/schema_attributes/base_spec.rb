@@ -15,7 +15,8 @@ describe Canvas::Validator::SchemaAttribute::Base do
           "label" => "My Title",
           "hint" => "This field is important",
           "group" => "content",
-          "array" => true
+          "array" => true,
+          "max_item_levels" => 3
         }
       }
 
@@ -106,6 +107,24 @@ describe Canvas::Validator::SchemaAttribute::Base do
         expect(validator.validate).to eq(false)
         expect(validator.errors).to include(
           "\"array\" is 'a string value', expected one of: true, false"
+        )
+      end
+    end
+
+    context "when max_item_levels is not 1, 2, or 3" do
+      let(:attribute) {
+        {
+          "name" => "my_title",
+          "type" => "text",
+          "array" => true,
+          "max_item_levels" => 4
+        }
+      }
+
+      it "returns false with errors" do
+        expect(validator.validate).to eq(false)
+        expect(validator.errors).to include(
+          "\"max_item_levels\" is '4', expected one of: 1, 2, 3"
         )
       end
     end

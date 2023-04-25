@@ -53,6 +53,7 @@ module Canvas
           {
             "default" => permitted_values_for_default_key,
             "array" => [true, false],
+            "max_item_levels" => [1, 2, 3],
             "label" => String,
             "hint" => String,
             "group" => %w[content layout design mobile]
