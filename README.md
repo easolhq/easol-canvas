@@ -135,8 +135,9 @@ cd alchemist_theme
    ```
    bundle exec gem tag
    ```
-5. Push created tag which will trigger Github actions responsible for publishing
-   new version of the gem to rubygems.org repository
+5. Push created tag with `git push --follow-tags` which will trigger Github
+   actions responsible for publishing new version of the gem to rubygems.org
+   repository
 6. On major version changes, update the version lock in the
    [canvas-linter-action](https://github.com/easolhq/canvas-linter-action/blob/main/entrypoint.sh)
    repo.
