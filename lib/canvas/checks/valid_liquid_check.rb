@@ -41,6 +41,7 @@ module Canvas
       register_tag("currency_switcher", ::Liquid::Tag)
       register_tag("json", ::Liquid::Block)
       register_tag("variant_pricing", ::Liquid::Tag)
+      register_tag("experience_date_search", ::Liquid::Block)
     end
   end
 end
