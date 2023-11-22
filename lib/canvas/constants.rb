@@ -28,6 +28,7 @@ module Canvas
       variant
       package
       date
+      experience_date
     ].freeze
 
     # These are types where the value is stored as a primitive type, e.g. string, integer.
