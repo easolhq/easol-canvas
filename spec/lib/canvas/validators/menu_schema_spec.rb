@@ -150,11 +150,11 @@ describe Canvas::Validator::MenuSchema do
 
         it "returns false with errors" do
           expect(validator.validate).to eq(false)
-          expect(validator.errors).to include(
-            "Attribute \"images\" is invalid - \"type\" must be one of: " \
-            "boolean, color, image, link, number, page, post, product, " \
-            "radio, range, select, string, text, variant, package, date"
-          )
+          expect(validator.errors)
+            .to include(
+              "Attribute \"images\" is invalid - \"type\" must be one of: " +
+                Canvas::Constants::PRIMITIVE_TYPES.join(", ")
+            )
         end
       end
 
