@@ -29,6 +29,7 @@ module Canvas
       package
       date
       experience_date
+      experience_slot
     ].freeze
 
     # These are types where the value is stored as a primitive type, e.g. string, integer.

@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-describe Canvas::Validator::SchemaAttribute::ExperienceDate do
+describe Canvas::Validator::SchemaAttribute::ExperienceSlot do
   subject(:validator) { described_class.new(attribute) }
 
   describe "#validate" do
     describe "validating an optional 'default' key" do
       let(:attribute) {
         {
-          "name" => "my_date",
-          "type" => "experience_date",
+          "name" => "my_slot",
+          "type" => "experience_slot",
           "default" => default_value
         }
       }
@@ -19,7 +19,7 @@ describe Canvas::Validator::SchemaAttribute::ExperienceDate do
         it "adds an error and fails the validation" do
           expect(validator.validate).to eq(false)
           expect(validator.errors).to include(
-            "\"default\" for experience_date variables must be one of: next_upcoming"
+            "\"default\" for experience_slot variables must be one of: next_upcoming"
           )
         end
       end
@@ -35,8 +35,8 @@ describe Canvas::Validator::SchemaAttribute::ExperienceDate do
       context "when `default` is an array with an invalid option" do
         let(:attribute) {
           {
-            "name" => "my_date",
-            "type" => "experience_date",
+            "name" => "my_slot",
+            "type" => "experience_slot",
             "array" => true,
             "default" => %w[next_upcoming unknown]
           }
@@ -44,7 +44,7 @@ describe Canvas::Validator::SchemaAttribute::ExperienceDate do
         it "returns false" do
           expect(validator.validate).to eq(false)
           expect(validator.errors).to include(
-            "\"default\" for experience_date variables must be one of: next_upcoming"
+            "\"default\" for experience_slot variables must be one of: next_upcoming"
           )
         end
       end
