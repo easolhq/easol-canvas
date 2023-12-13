@@ -131,13 +131,14 @@ cd alchemist_theme
    1. bundle exec gem bump --version [minor|major|patch]
    2. Commit these changes.
 3. Push changes, wait for PR to be approved, then merge to `main`.
-4. Pull the latest from `main` and then tag the latest version via git:
+4. Pull the latest from `main`
+5. Tag the latest version via git:
    ```
    bundle exec gem tag
    ```
-5. Push created tag with `git push --follow-tags` which will trigger Github
+6. Push created tag with `git push --follow-tags` which will trigger Github
    actions responsible for publishing new version of the gem to rubygems.org
    repository
-6. On major version changes, update the version lock in the
+7. On major version changes, update the version lock in the
    [canvas-linter-action](https://github.com/easolhq/canvas-linter-action/blob/main/entrypoint.sh)
    repo.
