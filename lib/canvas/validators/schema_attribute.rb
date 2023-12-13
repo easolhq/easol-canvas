@@ -36,6 +36,7 @@ module Canvas
         "package" => SchemaAttribute::Package,
         "date" => SchemaAttribute::Date,
         "experience_date" => SchemaAttribute::ExperienceDate,
+        "experience_slot" => SchemaAttribute::ExperienceSlot,
       }.freeze
       RESERVED_NAMES = %w[
         page
