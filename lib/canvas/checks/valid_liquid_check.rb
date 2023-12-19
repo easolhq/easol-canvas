@@ -42,6 +42,7 @@ module Canvas
       register_tag("json", ::Liquid::Block)
       register_tag("variant_pricing", ::Liquid::Tag)
       register_tag("experience_slot_search", ::Liquid::Block)
+      register_tag("experience_slot_calendar", ::Liquid::Block)
     end
   end
 end
