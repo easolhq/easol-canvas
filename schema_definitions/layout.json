@@ -46,7 +46,11 @@
         "elements": {
           "type": "array",
           "items": {
-            "oneOf": [{ "type": "string" }, { "$ref": "#/$defs/attribute" }]
+            "oneOf": [
+              { "type": "string" },
+              { "$ref": "#/$defs/accordion_toggle" },
+              { "$ref": "#/$defs/attribute" }
+            ]
           }
         }
       }
