@@ -11,6 +11,12 @@ attributes:
   image:
     label: "My image"
     type: image
+  color:
+    type: boolean
+    label: Update colours
+  card_background_color:
+    type: color
+    label: Card background colour
 layout:
   - label: "Content"
     type: tab
@@ -19,6 +25,13 @@ layout:
         type: attribute
       - subheading
       - unknown
+      - type: accordion
+        label: Booking card styles
+        elements:
+          - type: accordion_toggle
+            toggle_attribute: color
+            elements:
+              - card_background_color
 ---
 
 <h1>{{ heading }}</h1>
