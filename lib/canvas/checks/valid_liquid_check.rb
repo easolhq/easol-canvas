@@ -44,6 +44,7 @@ module Canvas
       register_tag("experience_slot_search", ::Liquid::Block)
       register_tag("experience_slot_calendar", ::Liquid::Block)
       register_tag("package_availability", Liquid::Block)
+      register_tag("package_price", Liquid::Block)
       register_tag("input", ::Liquid::Tag)
       register_tag("label", ::Liquid::Tag)
       register_tag("package_step_product_search", ::Liquid::Block)
