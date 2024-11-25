@@ -41,6 +41,7 @@ module Canvas
       register_tag("currency_switcher", ::Liquid::Tag)
       register_tag("json", ::Liquid::Block)
       register_tag("variant_pricing", ::Liquid::Tag)
+      register_tag("dynamic_package_booking_price", ::Liquid::Tag)
       register_tag("experience_slot_search", ::Liquid::Block)
       register_tag("experience_slot_calendar", ::Liquid::Block)
       register_tag("package_availability", Liquid::Block)
