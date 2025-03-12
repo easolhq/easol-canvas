@@ -15,11 +15,11 @@ describe Canvas::ValidJsonCheck do
     it "adds an offense when a file contains invalid json" do
       copy_example_directory("vagabond")
       subject.run
-      message = "unexpected token at 'This is an invalid custom type."
+      message_pattern = /Invalid JSON: .+ - \nunexpected \w+(?:: | at )'This is an invalid custom type\.\n'/
 
       expect(subject.offenses).to match_array(
         [
-          have_attributes(message: include(message.squeeze("\n")))
+          have_attributes(message: match(message_pattern))
         ]
       )
     end
