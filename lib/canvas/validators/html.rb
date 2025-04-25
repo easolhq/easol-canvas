@@ -34,7 +34,10 @@ module Canvas
       # same number of characters, so that the linter reports the
       # correct character number.
       def strip_out_liquid(html)
-        html.gsub(LIQUID_TAG_OR_VARIABLE) { |tag| "x" * tag.size }
+        # First replace liquid tags with spaces
+        html = html.gsub(LIQUID_TAG) { |tag| " " * tag.size }
+        # Then replace liquid variables with x's
+        html.gsub(LIQUID_VARIABLE) { |var| "x" * var.size }
       end
 
       # We want to strip out the front matter and replace it

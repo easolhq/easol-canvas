@@ -53,4 +53,29 @@ describe Canvas::Validator::Html do
       expect(Canvas::Validator::Html.new(html).validate).to be_truthy
     end
   end
+
+  describe "#strip_out_liquid" do
+    it "handles liquid tags and variables differently" do
+      html = <<~LIQUID
+        <a href="{{ variable }}" {% if condition %}target="_blank"{% endif %}>Link</a>
+      LIQUID
+      validator = described_class.new(html)
+      stripped = validator.send(:strip_out_liquid, html).chomp
+      expect(stripped).to eq(
+        '<a href="xxxxxxxxxxxxxx"                   target="_blank"           >Link</a>'
+      )
+    end
+
+    it "validates html with liquid tags and variables" do
+      html = <<~LIQUID
+        <div class="{% if condition %}active{% endif %}">
+          <h1>{{ title }}</h1>
+          <p>{{ content }}</p>
+        </div>
+      LIQUID
+
+      validator = described_class.new(html)
+      expect(validator.validate).to be_truthy
+    end
+  end
 end
