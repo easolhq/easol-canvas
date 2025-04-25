@@ -44,5 +44,13 @@ describe Canvas::Validator::Html do
 
       expect(Canvas::Validator::Html.new(html).validate).to be_truthy
     end
+
+    it "strips out liquid" do
+      html = <<-LIQUID
+        <{{ tag | default: 'div' }}>This is valid html</{{ tag | default: 'div' }}>
+      LIQUID
+
+      expect(Canvas::Validator::Html.new(html).validate).to be_truthy
+    end
   end
 end

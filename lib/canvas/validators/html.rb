@@ -31,10 +31,10 @@ module Canvas
       end
 
       # We want to strip out the liquid tags and replace them with the
-      # same number of empty space characters, so that the linter
-      # reports the correct character number.
+      # same number of characters, so that the linter reports the
+      # correct character number.
       def strip_out_liquid(html)
-        html.gsub(LIQUID_TAG_OR_VARIABLE) { |tag| " " * tag.size }
+        html.gsub(LIQUID_TAG_OR_VARIABLE) { |tag| "x" * tag.size }
       end
 
       # We want to strip out the front matter and replace it
