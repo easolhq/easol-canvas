@@ -20,6 +20,7 @@ module Canvas
     class SchemaAttribute
       VALIDATORS = {
         "image" => SchemaAttribute::Image,
+        "modifier" => SchemaAttribute::Modifier,
         "product" => SchemaAttribute::Product,
         "post" => SchemaAttribute::Post,
         "page" => SchemaAttribute::Page,

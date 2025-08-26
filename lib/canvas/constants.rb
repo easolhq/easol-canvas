@@ -16,6 +16,7 @@ module Canvas
       color
       image
       link
+      modifier
       number
       page
       post
