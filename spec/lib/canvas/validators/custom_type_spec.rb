@@ -2,8 +2,10 @@
 
 describe Canvas::Validator::CustomType do
   subject(:validator) {
-    Canvas::Validator::CustomType.new(schema: schema)
+    Canvas::Validator::CustomType.new(schema: schema, custom_types: custom_types)
   }
+
+  let(:custom_types) { [] }
 
   describe "#validate" do
     context "when schema has required keys" do
@@ -246,6 +248,49 @@ describe Canvas::Validator::CustomType do
       it "returns false with errors" do
         expect(validator.validate).to eq(false)
         expect(validator.errors).to include("The first attribute cannot be an array")
+      end
+    end
+
+    context "when attributes reference another custom type" do
+      let(:custom_types) { [referenced_type, schema] }
+
+      let(:referenced_type) {
+        {
+          "key" => "faq",
+          "name" => "Faq",
+          "attributes" => [
+            {
+              "name" => "question",
+              "type" => "string"
+            },
+            {
+              "name" => "answer",
+              "type" => "text"
+            }
+          ]
+        }
+      }
+
+      let(:schema) {
+        {
+          "key" => "faq_list",
+          "name" => "Faq List",
+          "attributes" => [
+            {
+              "name" => "title",
+              "type" => "string"
+            },
+            {
+              "name" => "items",
+              "type" => "faq",
+              "array" => true
+            }
+          ]
+        }
+      }
+
+      it "allows nested custom types" do
+        expect(validator.validate).to eq(true)
       end
     end
   end

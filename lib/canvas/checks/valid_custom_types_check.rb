@@ -6,9 +6,11 @@ module Canvas
   # custom types that are defined in the /types directory.
   class ValidCustomTypesCheck < Check
     def run
+      custom_types = Canvas::FetchCustomTypes.call
+
       custom_type_files.each do |filename|
         schema = extract_json(filename)
-        validator = Validator::CustomType.new(schema: schema)
+        validator = Validator::CustomType.new(schema: schema, custom_types: custom_types)
 
         next if validator.validate
 
