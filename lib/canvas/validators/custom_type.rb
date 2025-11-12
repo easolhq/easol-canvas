@@ -26,10 +26,11 @@ module Canvas
     class CustomType
       REQUIRED_KEYS = %w[key name attributes].freeze
 
-      attr_reader :schema, :errors
+      attr_reader :schema, :errors, :custom_types
 
-      def initialize(schema:)
+      def initialize(schema:, custom_types: [])
         @schema = schema
+        @custom_types = custom_types
         @errors = []
       end
 
@@ -127,7 +128,7 @@ module Canvas
         schema["attributes"].each do |attribute_schema|
           attr_validator = Validator::SchemaAttribute.new(
             attribute: attribute_schema,
-            custom_types: []
+            custom_types: custom_types
           )
           next if attr_validator.validate
 
