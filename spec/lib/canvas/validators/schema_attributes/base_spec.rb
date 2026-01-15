@@ -57,6 +57,20 @@ describe Canvas::Validator::SchemaAttribute::Base do
       end
     end
 
+    context "when using visible_if key" do
+      let(:attribute) {
+        {
+          "name" => "button_content",
+          "type" => "button_content_v1",
+          "visible_if" => "show_button"
+        }
+      }
+
+      it "returns true" do
+        expect(validator.validate).to eq(true)
+      end
+    end
+
     context "when group is not from permitted list of values" do
       let(:attribute) {
         {

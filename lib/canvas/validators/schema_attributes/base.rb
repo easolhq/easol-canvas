@@ -55,7 +55,8 @@ module Canvas
             "array" => [true, false],
             "label" => String,
             "hint" => String,
-            "group" => %w[content layout design mobile]
+            "group" => %w[content layout design mobile],
+            "visible_if" => String
           }
         end
 
