@@ -25,6 +25,7 @@ module Canvas
     #
     class CustomType
       REQUIRED_KEYS = %w[key name attributes].freeze
+      OPTIONAL_KEYS = %w[layout].freeze
 
       attr_reader :schema, :errors, :custom_types
 
@@ -43,7 +44,8 @@ module Canvas
           ensure_key_value_is_not_reserved &&
           ensure_no_duplicate_attributes &&
           ensure_attributes_are_valid &&
-          ensure_first_attribute_not_array
+          ensure_first_attribute_not_array &&
+          ensure_layout_is_valid
 
         errors.empty?
       end
@@ -66,7 +68,7 @@ module Canvas
       end
 
       def ensure_no_unrecognized_keys
-        unrecognized_keys = schema.keys - REQUIRED_KEYS
+        unrecognized_keys = schema.keys - REQUIRED_KEYS - OPTIONAL_KEYS
         return true if unrecognized_keys.empty?
 
         @errors << "Unrecognized keys: #{unrecognized_keys.join(', ')}"
@@ -143,6 +145,16 @@ module Canvas
         return true if first_attribute.nil? || first_attribute["array"] != true
 
         @errors << "The first attribute cannot be an array"
+        false
+      end
+
+      def ensure_layout_is_valid
+        return true unless schema["layout"]
+
+        layout_validator = CustomTypeLayoutSchema.new(schema:)
+        return true if layout_validator.validate
+
+        @errors += layout_validator.errors
         false
       end
     end

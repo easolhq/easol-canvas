@@ -293,5 +293,93 @@ describe Canvas::Validator::CustomType do
         expect(validator.validate).to eq(true)
       end
     end
+
+    context "when schema has a valid layout" do
+      let(:schema) {
+        {
+          "key" => "card",
+          "name" => "Card",
+          "attributes" => [
+            { "name" => "title", "type" => "string" },
+            { "name" => "description", "type" => "text" },
+            { "name" => "show_icon", "type" => "boolean" }
+          ],
+          "layout" => [
+            {
+              "elements" => [
+                "title",
+                {
+                  "type" => "accordion",
+                  "label" => "Details",
+                  "elements" => ["description"]
+                }
+              ]
+            }
+          ]
+        }
+      }
+
+      it "returns true" do
+        expect(validator.validate).to eq(true)
+      end
+    end
+
+    context "when schema has layout with unrecognized attribute" do
+      let(:schema) {
+        {
+          "key" => "card",
+          "name" => "Card",
+          "attributes" => [
+            { "name" => "title", "type" => "string" }
+          ],
+          "layout" => [
+            {
+              "elements" => ["title", "unknown_attr"]
+            }
+          ]
+        }
+      }
+
+      it "returns false with errors" do
+        expect(validator.validate).to eq(false)
+        expect(validator.errors).to include("Unrecognized attribute `unknown_attr`. Location: layout/0/elements/1")
+      end
+    end
+
+    context "when schema has layout with invalid format" do
+      let(:schema) {
+        {
+          "key" => "card",
+          "name" => "Card",
+          "attributes" => [
+            { "name" => "title", "type" => "string" }
+          ],
+          "layout" => [
+            { "invalid" => "format" }
+          ]
+        }
+      }
+
+      it "returns false with errors" do
+        expect(validator.validate).to eq(false)
+        expect(validator.errors.first).to match(/did not contain a required property of 'elements'/)
+      end
+    end
+
+    context "when schema has no layout" do
+      let(:schema) {
+        {
+          "key" => "card",
+          "name" => "Card",
+          "attributes" => [
+            { "name" => "title", "type" => "string" }
+          ]
+        }
+      }
+
+      it "returns true (layout is optional)" do
+        expect(validator.validate).to eq(true)
+      end
+    end
   end
 end
