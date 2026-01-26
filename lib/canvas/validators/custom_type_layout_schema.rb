@@ -116,15 +116,9 @@ module Canvas
           end
         }
 
-        layout_schema.each_with_index do |group, i|
+        layout_schema.each_with_index do |element, i|
           current_path = "layout/#{i}"
-          # Process the group's elements
-          if group.is_a?(Hash) && group.key?("elements")
-            group["elements"].each_with_index do |element, j|
-              element_path = "#{current_path}/elements/#{j}"
-              fetch_element.call(element, element_path)
-            end
-          end
+          fetch_element.call(element, current_path)
         end
 
         elements
