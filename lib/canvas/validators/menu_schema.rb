@@ -33,7 +33,7 @@ module Canvas
     #   ]
     # }
     class MenuSchema
-      PERMITTED_KEYS = %w[max_item_levels supports_open_new_tab attributes layout].freeze
+      PERMITTED_KEYS = %w[cache max_item_levels supports_open_new_tab attributes layout].freeze
       ADDITIONAL_RESERVED_NAMES = %w[items type].freeze
 
       attr_reader :schema, :errors
@@ -49,6 +49,7 @@ module Canvas
       def validate
         if ensure_valid_format
           ensure_no_unrecognized_keys
+          ensure_cache_is_valid
           ensure_max_item_levels_is_valid
           ensure_layout_is_valid
           ensure_attributes_are_valid
@@ -72,6 +73,17 @@ module Canvas
         return true if unrecognized_keys.empty?
 
         @errors << "Unrecognized keys: #{unrecognized_keys.join(', ')}"
+        false
+      end
+
+      def ensure_cache_is_valid
+        return true unless schema.key?("cache")
+
+        value = schema["cache"]
+        return true if value == true || value == false
+        return true if value.to_s == "true" || value.to_s == "false"
+
+        @errors << "\"cache\" must be true or false"
         false
       end
 

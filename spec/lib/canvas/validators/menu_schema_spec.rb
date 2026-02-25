@@ -211,6 +211,67 @@ describe Canvas::Validator::MenuSchema do
         end
       end
 
+      context "when cache is true" do
+        let(:schema) {
+          {
+            "cache" => true
+          }
+        }
+
+        it "returns true" do
+          expect(validator.validate).to eq(true)
+        end
+      end
+
+      context "when cache is false" do
+        let(:schema) {
+          {
+            "cache" => false
+          }
+        }
+
+        it "returns true" do
+          expect(validator.validate).to eq(true)
+        end
+      end
+
+      context "when cache is a string true" do
+        let(:schema) {
+          {
+            "cache" => "true"
+          }
+        }
+
+        it "returns true" do
+          expect(validator.validate).to eq(true)
+        end
+      end
+
+      context "when cache is a string false" do
+        let(:schema) {
+          {
+            "cache" => "false"
+          }
+        }
+
+        it "returns true" do
+          expect(validator.validate).to eq(true)
+        end
+      end
+
+      context "when cache is not a boolean" do
+        let(:schema) {
+          {
+            "cache" => "yes"
+          }
+        }
+
+        it "returns false with errors" do
+          expect(validator.validate).to eq(false)
+          expect(validator.errors).to include("\"cache\" must be true or false")
+        end
+      end
+
       context "when the `layout` is valid" do
         let(:schema) {
           {
