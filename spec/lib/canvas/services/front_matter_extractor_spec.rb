@@ -58,6 +58,14 @@ describe Canvas::FrontMatterExtractor do
         expect(service.front_matter).to eq(nil)
       end
     end
+
+    context "when markup is large and has no front matter" do
+      let(:markup) { "<div>#{"<p>content</p>\n" * 10_000}</div>" }
+
+      it "returns nil without timeout" do
+        expect(service.front_matter).to eq(nil)
+      end
+    end
   end
 
   describe "#html" do
@@ -97,6 +105,14 @@ describe Canvas::FrontMatterExtractor do
 
       it "returns empty string" do
         expect(service.html).to eq("")
+      end
+    end
+
+    context "when markup is large and has no front matter" do
+      let(:markup) { "<div>#{"<p>content</p>\n" * 10_000}</div>" }
+
+      it "returns the full markup without timeout" do
+        expect(service.html).to eq(markup)
       end
     end
   end

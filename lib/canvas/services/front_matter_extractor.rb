@@ -34,7 +34,9 @@ module Canvas
     # and the HTML content.
     def scan(markup)
       markup = markup.gsub(/\t/, "  ")
-      [*markup.match(/(?:---\s+(.*?)\s+---\s+)(.*\s?)$/m)&.captures]
+      return [] unless markup.strip.start_with?("---")
+
+      [*markup.match(/\A\s*---\s*\n(.*?)\n\s*---\s*\n(.*)\z/m)&.captures]
     end
   end
 end
