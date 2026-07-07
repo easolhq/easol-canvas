@@ -1,13 +1,18 @@
 # frozen_string_literal: true
 
-require "open3"
+require "sass-embedded"
 
 module Canvas
-  # This is a thin wrapper around the dartsass binary as provided by
-  # dartsass-rails.
+  # Compiles SCSS with dart-sass via the sass-embedded Ruby API.
   #
   # It is compatible with SassC::Engine as much as we were using it, but 100%
   # compatability is not a goal.
+  #
+  # We use the in-process API rather than shelling out to the `dartsass`
+  # executable: the CLI resolves `Gem.bin_path("sass-embedded", "sass")`, which
+  # is ambiguous (and noisy on stderr) whenever another bundled gem — e.g. the
+  # legacy `sass` gem — also ships a `sass` executable. The API has no such
+  # dependency on executable resolution and avoids a subprocess per render.
   class DartSass
     Error = Class.new(StandardError)
 
@@ -17,31 +22,15 @@ module Canvas
     end
 
     def render
-      stdout, stderr, status = Open3.capture3(*command, stdin_data: @css)
-
-      if status == 0
-        stdout
-      else
-        raise Error.new(stderr)
-      end
-    end
-
-    private
-
-    def command
-      [dartsass, "--stdin", style, *load_paths].compact
-    end
-
-    def dartsass
-      Gem.bin_path("dartsass-rails", "dartsass").shellescape
-    end
-
-    def style
-      (s = @config[:style]) && "--style=#{s.to_s.shellescape}"
-    end
-
-    def load_paths
-      Array(@config[:load_paths]).map { "--load-path=#{_1.shellescape}" }
+      Sass.compile_string(
+        @css,
+        load_paths: Array(@config[:load_paths]),
+        style: @config[:style] || :expanded
+      ).css
+    rescue Sass::CompileError => e
+      # detailed_message keeps the formatted dart-sass error (source snippet and
+      # line:column) the CLI used to print to stderr; highlight: false strips ANSI.
+      raise Error.new(e.detailed_message(highlight: false))
     end
   end
 end
