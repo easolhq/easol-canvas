@@ -46,6 +46,7 @@ module Canvas
       register_tag("accommodation_availability", ::Liquid::Block)
       register_tag("cache", ::Liquid::Block)
       register_tag("experience_slot_calendar", ::Liquid::Block)
+      register_tag("experience_slot_lookup", ::Liquid::Block)
       register_tag("experience_slot_search", ::Liquid::Block)
       register_tag("form", ::Liquid::Block)
       register_tag("json", ::Liquid::Block)
